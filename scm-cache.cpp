@@ -25,11 +25,11 @@
 
 // Static cache configuration parameters and their defaults.
 
-int scm_cache::cache_size      = 16;
-int scm_cache::cache_threads   =  2;
+int scm_cache::cache_size = 16;
+int scm_cache::cache_threads = 2;
 int scm_cache::need_queue_size = 32;
-int scm_cache::load_queue_size =  8;
-int scm_cache::loads_per_cycle =  2;
+int scm_cache::load_queue_size = 8;
+int scm_cache::loads_per_cycle = 2;
 
 //------------------------------------------------------------------------------
 
@@ -60,20 +60,20 @@ scm_cache::scm_cache(scm_system *sys, int n, int c, int b) :
     GLenum e = scm_external_form(c, b);
     GLenum y = scm_external_type(c, b);
 
-    glGenTextures  (1, &texture);
-    glBindTexture  (GL_TEXTURE_2D, texture);
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-//  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-//  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16);
-//  glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
+    //  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    //  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16);
+    //  glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
 
     // Initialize it with a buffer of zeros.
 
     const int m = s * (n + 2);
 
-    if (GLubyte *p = (GLubyte *) calloc(m * m, scm_pixel_size(c, b)))
+    if (GLubyte *p = (GLubyte *)calloc(m * m, scm_pixel_size(c, b)))
     {
         glTexImage2D(GL_TEXTURE_2D, 0, i, m, m, 0, e, y, p);
         free(p);
@@ -117,7 +117,6 @@ int scm_cache::get_page(int f, long long i, int t, int& u)
     if (scm_file *file = sys->get_file(f))
     {
         // If this page does not exist, return the filler.
-
         uint64 o = file->get_page_offset(i);
 
         if (o == 0)
@@ -129,7 +128,7 @@ int scm_cache::get_page(int f, long long i, int t, int& u)
 
         if (wait.is_valid())
         {
-            u    = wait.t;
+            u = wait.t;
             return wait.l;
         }
 
@@ -139,7 +138,7 @@ int scm_cache::get_page(int f, long long i, int t, int& u)
 
         if (page.is_valid())
         {
-            u    = page.t;
+            u = page.t;
             return page.l;
         }
 
@@ -211,7 +210,7 @@ void scm_cache::update(int t, bool b)
                 page.t = t;
                 pages.insert(page, t);
                 task.make_page((l % s) * (n + 2),
-                               (l / s) * (n + 2));
+                    (l / s) * (n + 2));
             }
             else task.dump_page();
         }

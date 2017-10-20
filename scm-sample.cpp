@@ -26,18 +26,23 @@ scm_sample::scm_sample(scm_file *file) : file(file)
     last_v[0] = 0;
     last_v[1] = 0;
     last_v[2] = 0;
-    last_k    = 0;
-    last_p    = 0;
-    last_o    = 0;
-    last_i0   = (tsize_t) (-1);
-    last_i1   = (tsize_t) (-1);
+    last_k = 0;
+
+    last_k4v = (float*)calloc(4, sizeof(float));
+    for (int j = 0; j < 4; j++)
+        last_k4v[j] = 0;
+
+    last_p = 0;
+    last_o = 0;
+    last_i0 = (tsize_t)(-1);
+    last_i1 = (tsize_t)(-1);
 
     if ((tiff = TIFFOpen(file->get_path(), "r")))
     {
         tsize_t N = TIFFNumberOfStrips(tiff);
-        tsize_t S = TIFFStripSize     (tiff);
+        tsize_t S = TIFFStripSize(tiff);
 
-        last_p = (uint8 *) malloc(S * N);
+        last_p = (uint8 *)malloc(S * N);
 
         scm_log("scm_sample constructor %s", file->get_path());
     }
@@ -61,11 +66,45 @@ float scm_sample::lookup(int y, int x) const
 
     switch (file->get_b())
     {
-        case  8: return ((unsigned char  *) last_p)[(w * y + x) * c] /   255.f;
-        case 16: return ((unsigned short *) last_p)[(w * y + x) * c] / 65535.f;
-        case 32: return ((         float *) last_p)[(w * y + x) * c];
-        default: return 1.f;
+    case  8: return ((unsigned char  *)last_p)[(w * y + x) * c] / 255.f;
+    case 16: return ((unsigned short *)last_p)[(w * y + x) * c] / 65535.f;
+    case 32: return ((float *)last_p)[(w * y + x) * c];
+    default: return 1.f;
     }
+}
+
+float* scm_sample::lookup4v(int y, int x) const
+{
+    int w = file->get_w();
+    int c = file->get_c();
+
+    int i;
+    float *result = (float*)calloc(4, sizeof(float));
+    switch (file->get_b())
+    {
+    case  8:
+        for (i = 0; i < c; i++)
+            result[i] = ((unsigned char  *)last_p)[(w * y + x) * c + i] / 255.f;
+        break;
+
+    case 16:
+        for (i = 0; i < c; i++)
+            result[i] = ((unsigned short *)last_p)[(w * y + x) * c + i] / 65535.f;
+        break;
+
+    case 32:
+        for (i = 0; i < c; i++)
+            result[i] = ((float *)last_p)[(w * y + x) * c + i];
+        break;
+
+    default:
+        for (i = 0; i < c; i++)
+            result[i] = 1.f;
+    }
+    for (i = c; i < 4; i++)
+        result[i] = 9001.f;
+
+    return result;
 }
 
 float scm_sample::get(const double *v)
@@ -76,11 +115,14 @@ float scm_sample::get(const double *v)
         {
             // Locate the face and coordinates of vector v.
 
-            long long a;
+            long long a = -5;
             double    y;
             double    x;
 
             scm_locate(&a, &y, &x, v);
+            if (a == -5)
+                return 9001;
+
             x = 1 - x;
 
             // Find the deepest page covering this location.
@@ -104,9 +146,9 @@ float scm_sample::get(const double *v)
             {
                 if (TIFFSetSubDirectory(tiff, o))
                 {
-                    last_i0 = (tsize_t) -1;
-                    last_i1 = (tsize_t) -1;
-                    last_o  = o;
+                    last_i0 = (tsize_t)-1;
+                    last_i1 = (tsize_t)-1;
+                    last_o = o;
                 }
             }
 
@@ -143,7 +185,7 @@ float scm_sample::get(const double *v)
 
                     // Cache the request and its result.
 
-                    last_k    = lerp(lerp(s00, s01, cc), lerp(s10, s11, cc), rr);
+                    last_k = lerp(lerp(s00, s01, cc), lerp(s10, s11, cc), rr);
                     last_v[0] = v[0];
                     last_v[1] = v[1];
                     last_v[2] = v[2];
@@ -152,6 +194,102 @@ float scm_sample::get(const double *v)
         }
     }
     return last_k;
+}
+
+float* scm_sample::get4v(const double *v)
+{
+    if (file && tiff)
+    {
+        if (v[0] != last_v[0] || v[1] != last_v[1] || v[2] != last_v[2])
+        {
+            // Locate the face and coordinates of vector v.
+
+            long long a = -5;
+            double    y;
+            double    x;
+
+            scm_locate(&a, &y, &x, v);
+            if (a == -5)
+            {
+                float *result = (float*)calloc(4, sizeof(float));
+                for (int j = 0; j < 4; j++)
+                    result[j] = 9001.f;
+                return result;
+            }
+
+            x = 1 - x;
+
+            // Find the deepest page covering this location.
+
+            uint64 o = file->find_page(a, y, x);
+
+            // Convert the root face coordinate to a local face coordinate.
+
+            double r = y * (file->get_h() - 2.0) + 0.5;
+            double c = x * (file->get_w() - 2.0) + 0.5;
+
+            int r0 = int(floor(r)), r1 = r0 + 1;
+            int c0 = int(floor(c)), c1 = c0 + 1;
+
+            tsize_t i0 = TIFFComputeStrip(tiff, r0, 0);
+            tsize_t i1 = TIFFComputeStrip(tiff, r1, 0);
+
+            // If the required page is not current, set it.
+
+            if (last_o != o)
+            {
+                if (TIFFSetSubDirectory(tiff, o))
+                {
+                    last_i0 = (tsize_t)-1;
+                    last_i1 = (tsize_t)-1;
+                    last_o = o;
+                }
+            }
+
+            // If the required data is not cached, load it.
+
+            if (last_o == o)
+            {
+                if (last_i0 != i0 || last_i1 != i1)
+                {
+                    tsize_t S = TIFFStripSize(tiff);
+
+                    if (i0 == i1)
+                        TIFFReadEncodedStrip(tiff, i0, last_p + i0 * S, S);
+                    else
+                    {
+                        TIFFReadEncodedStrip(tiff, i0, last_p + i0 * S, S);
+                        TIFFReadEncodedStrip(tiff, i1, last_p + i1 * S, S);
+                    }
+                    last_i0 = i0;
+                    last_i1 = i1;
+                }
+
+                if (last_i0 == i0 && last_i1 == i1)
+                {
+                    // Sample the cache with linear filtering.
+
+                    float* s00 = lookup4v(r0, c0);
+                    float* s01 = lookup4v(r0, c1);
+                    float* s10 = lookup4v(r1, c0);
+                    float* s11 = lookup4v(r1, c1);
+
+                    double rr = r - floor(r);
+                    double cc = c - floor(c);
+
+                    // Cache the request and its result.
+                    for (int j = 0; j < 4; j++)
+                    {
+                        last_k4v[j] = lerp(lerp(s00[j], s01[j], cc), lerp(s10[j], s11[j], cc), rr);
+                    }
+                    last_v[0] = v[0];
+                    last_v[1] = v[1];
+                    last_v[2] = v[2];
+                }
+            }
+        }
+    }
+    return last_k4v;
 }
 
 //------------------------------------------------------------------------------

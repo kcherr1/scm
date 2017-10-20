@@ -51,7 +51,7 @@ void scm_render::init_uniforms(GLuint program)
         glUniform1i(glGetUniformLocation(program, "depth0"), 2);
         glUniform1i(glGetUniformLocation(program, "depth1"), 3);
     }
-    glUseProgram(0);
+    //glUseProgram(0);
 }
 
 void scm_render::init_matrices()
@@ -59,25 +59,25 @@ void scm_render::init_matrices()
     double w = double(width);
     double h = double(height);
 
-    A[0] = 1/w; A[4] = 0.0; A[ 8] = 0.0; A[12] =  0.0;
-    A[1] = 0.0; A[5] = 1/h; A[ 9] = 0.0; A[13] =  0.0;
-    A[2] = 0.0; A[6] = 0.0; A[10] = 1.0; A[14] =  0.0;
-    A[3] = 0.0; A[7] = 0.0; A[11] = 0.0; A[15] =  1.0;
+    A[0] = 1 / w; A[4] = 0.0; A[8] = 0.0; A[12] = 0.0;
+    A[1] = 0.0; A[5] = 1 / h; A[9] = 0.0; A[13] = 0.0;
+    A[2] = 0.0; A[6] = 0.0; A[10] = 1.0; A[14] = 0.0;
+    A[3] = 0.0; A[7] = 0.0; A[11] = 0.0; A[15] = 1.0;
 
-    B[0] = 2.0; B[4] = 0.0; B[ 8] = 0.0; B[12] = -1.0;
-    B[1] = 0.0; B[5] = 2.0; B[ 9] = 0.0; B[13] = -1.0;
+    B[0] = 2.0; B[4] = 0.0; B[8] = 0.0; B[12] = -1.0;
+    B[1] = 0.0; B[5] = 2.0; B[9] = 0.0; B[13] = -1.0;
     B[2] = 0.0; B[6] = 0.0; B[10] = 2.0; B[14] = -1.0;
-    B[3] = 0.0; B[7] = 0.0; B[11] = 0.0; B[15] =  1.0;
+    B[3] = 0.0; B[7] = 0.0; B[11] = 0.0; B[15] = 1.0;
 
-    C[0] = 0.5; C[4] = 0.0; C[ 8] = 0.0; C[12] =  0.5;
-    C[1] = 0.0; C[5] = 0.5; C[ 9] = 0.0; C[13] =  0.5;
-    C[2] = 0.0; C[6] = 0.0; C[10] = 0.5; C[14] =  0.5;
-    C[3] = 0.0; C[7] = 0.0; C[11] = 0.0; C[15] =  1.0;
+    C[0] = 0.5; C[4] = 0.0; C[8] = 0.0; C[12] = 0.5;
+    C[1] = 0.0; C[5] = 0.5; C[9] = 0.0; C[13] = 0.5;
+    C[2] = 0.0; C[6] = 0.0; C[10] = 0.5; C[14] = 0.5;
+    C[3] = 0.0; C[7] = 0.0; C[11] = 0.0; C[15] = 1.0;
 
-    D[0] =   w; D[4] = 0.0; D[ 8] = 0.0; D[12] =  0.0;
-    D[1] = 0.0; D[5] =   h; D[ 9] = 0.0; D[13] =  0.0;
-    D[2] = 0.0; D[6] = 0.0; D[10] = 1.0; D[14] =  0.0;
-    D[3] = 0.0; D[7] = 0.0; D[11] = 0.0; D[15] =  1.0;
+    D[0] = w; D[4] = 0.0; D[8] = 0.0; D[12] = 0.0;
+    D[1] = 0.0; D[5] = h; D[9] = 0.0; D[13] = 0.0;
+    D[2] = 0.0; D[6] = 0.0; D[10] = 1.0; D[14] = 0.0;
+    D[3] = 0.0; D[7] = 0.0; D[11] = 0.0; D[15] = 1.0;
 }
 
 //------------------------------------------------------------------------------
@@ -91,18 +91,18 @@ void scm_render::init_matrices()
 
 void scm_render::init_ogl()
 {
-    glsl_source(&render_fade, (const char *) scm_render_fade_vert,
-                                             scm_render_fade_vert_len,
-                              (const char *) scm_render_fade_frag,
-                                             scm_render_fade_frag_len);
-    glsl_source(&render_blur, (const char *) scm_render_blur_vert,
-                                             scm_render_blur_vert_len,
-                              (const char *) scm_render_blur_frag,
-                                             scm_render_blur_frag_len);
-    glsl_source(&render_both, (const char *) scm_render_both_vert,
-                                             scm_render_both_vert_len,
-                              (const char *) scm_render_both_frag,
-                                             scm_render_both_frag_len);
+    glsl_source(&render_fade, (const char *)scm_render_fade_vert,
+        scm_render_fade_vert_len,
+        (const char *)scm_render_fade_frag,
+        scm_render_fade_frag_len);
+    glsl_source(&render_blur, (const char *)scm_render_blur_vert,
+        scm_render_blur_vert_len,
+        (const char *)scm_render_blur_frag,
+        scm_render_blur_frag_len);
+    glsl_source(&render_both, (const char *)scm_render_both_vert,
+        scm_render_both_vert_len,
+        (const char *)scm_render_both_frag,
+        scm_render_both_frag_len);
 
     init_uniforms(render_fade.program);
     init_uniforms(render_blur.program);
@@ -207,7 +207,7 @@ static double fardistance(const double *P)
     double e[4] = { 0.0, 0.0, 0.0, 0.0 };
     double I[16];
 
-    minvert   (I, P);
+    minvert(I, P);
     wtransform(e, I, c);
 
     return vlen(e) / e[3];
@@ -218,7 +218,7 @@ static double fardistance(const double *P)
 // Determine whether fading is necessary.
 
 bool scm_render::check_fade(scm_scene *fore0, scm_scene *fore1,
-                            scm_scene *back0, scm_scene *back1, double t)
+    scm_scene *back0, scm_scene *back1, double t)
 {
     if (t < 1.0 / 255)  return false;
     if (fore0 != fore1) return true;
@@ -229,8 +229,8 @@ bool scm_render::check_fade(scm_scene *fore0, scm_scene *fore1,
 // Determine whether blurring is necessary and compute its transform.
 
 bool scm_render::check_blur(const double *P,
-                            const double *M,
-                                  double *S, GLfloat *U)
+    const double *M,
+    double *S, GLfloat *U)
 {
     if (blur)
     {
@@ -242,25 +242,25 @@ bool scm_render::check_blur(const double *P,
 
         mmultiply(T, P, M);
 
-        if (T[ 0] != S[ 0] || T[ 1] != S[ 1] ||
-            T[ 2] != S[ 2] || T[ 3] != S[ 3] ||
-            T[ 4] != S[ 4] || T[ 5] != S[ 5] ||
-            T[ 6] != S[ 6] || T[ 7] != S[ 7] ||
-            T[ 8] != S[ 8] || T[ 9] != S[ 9] ||
+        if (T[0] != S[0] || T[1] != S[1] ||
+            T[2] != S[2] || T[3] != S[3] ||
+            T[4] != S[4] || T[5] != S[5] ||
+            T[6] != S[6] || T[7] != S[7] ||
+            T[8] != S[8] || T[9] != S[9] ||
             T[10] != S[10] || T[11] != S[11] ||
             T[12] != S[12] || T[13] != S[13] ||
             T[14] != S[14] || T[15] != S[15])
         {
             // Compose a transform taking current screen coords to previous.
 
-            minvert (I, T);
-            mcpy    (N, D);
+            minvert(I, T);
+            mcpy(N, D);
             mcompose(N, C);
             mcompose(N, S);
             mcompose(N, I);
             mcompose(N, B);
             mcompose(N, A);
-            mcpy    (S, T);
+            mcpy(S, T);
 
             // Return this transform for use as an OpenGL uniform.
 
@@ -277,10 +277,10 @@ bool scm_render::check_blur(const double *P,
 // first to allow the depth test to eliminate background texture cache traffic.
 
 void scm_render::render(scm_sphere *sphere,
-                        scm_scene  *fore,
-                        scm_scene  *back,
-                      const double *P,
-                      const double *M, int channel, int frame)
+    scm_scene  *fore,
+    scm_scene  *back,
+    const double *P,
+    const double *M, int channel, int frame)
 {
     double T[16];
 
@@ -341,7 +341,10 @@ void scm_render::render(scm_sphere *sphere,
         glPushAttrib(GL_POLYGON_BIT);
         {
             glFrontFace(GL_CW);
+            sphere->transfb->begin();
+            sphere->transfb->pause();
             sphere->draw(fore, T, width, height, channel, frame);
+            sphere->transfb->end();
             fore->draw_label();
         }
         glPopAttrib();
@@ -354,12 +357,12 @@ void scm_render::render(scm_sphere *sphere,
 // Render, blur, and blend the given scenes.
 
 void scm_render::render(scm_sphere *sphere,
-                        scm_scene  *fore0,
-                        scm_scene  *fore1,
-                        scm_scene  *back0,
-                        scm_scene  *back1,
-                      const double *P,
-                      const double *M, int channel, int frame, double t)
+    scm_scene  *fore0,
+    scm_scene  *fore1,
+    scm_scene  *back0,
+    scm_scene  *back1,
+    const double *P,
+    const double *M, int channel, int frame, double t)
 {
     GLfloat T[16];
 
@@ -380,7 +383,7 @@ void scm_render::render(scm_sphere *sphere,
         glPushAttrib(GL_VIEWPORT_BIT | GL_SCISSOR_BIT);
         {
             glViewport(0, 0, width, height);
-            glScissor (0, 0, width, height);
+            glScissor(0, 0, width, height);
             glClearColor(0.f, 0.f, 0.f, 0.f);
 
             frame0->bind_frame();
@@ -410,29 +413,29 @@ void scm_render::render(scm_sphere *sphere,
 
         // Bind the necessary shader and set its uniforms.
 
-        if      (do_fade && do_blur)
+        if (do_fade && do_blur)
         {
-            glUseProgram(render_both.program);
-            glUniform1f       (uniform_both_t,       t);
-            glUniform1i       (uniform_both_n,    blur);
+            //glUseProgram(render_both.program);
+            glUniform1f(uniform_both_t, t);
+            glUniform1i(uniform_both_n, blur);
             glUniformMatrix4fv(uniform_both_T, 1, 0, T);
         }
         else if (do_fade && !do_blur)
         {
-            glUseProgram(render_fade.program);
-            glUniform1f       (uniform_fade_t,       t);
+            //glUseProgram(render_fade.program);
+            glUniform1f(uniform_fade_t, t);
         }
         else if (!do_fade && do_blur)
         {
-            glUseProgram(render_blur.program);
-            glUniform1i       (uniform_blur_n,    blur);
+            //glUseProgram(render_blur.program);
+            glUniform1i(uniform_blur_n, blur);
             glUniformMatrix4fv(uniform_blur_T, 1, 0, T);
         }
 
         // Render the blur / fade to the framebuffer.
 
         fillscreen(width, height);
-        glUseProgram(0);
+        //glUseProgram(0);
     }
 }
 
@@ -441,7 +444,7 @@ void scm_render::render(scm_sphere *sphere,
 void scm_render::set_size(int w, int h)
 {
     free_ogl();
-    width  = w;
+    width = w;
     height = h;
     init_ogl();
     init_matrices();

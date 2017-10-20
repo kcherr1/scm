@@ -1,0 +1,300 @@
+﻿Build started 1/8/2015 5:24:43 PM.
+     1>Project "C:\Users\COD\Documents\LSU\Research\Code\Moon\scm\SCM.vcxproj" on node 2 (Rebuild target(s)).
+     1>_PrepareForClean:
+         Deleting file "Release\SCM.lastbuildstate".
+       InitializeBuildStatus:
+         Touching "Release\SCM.unsuccessfulbuild".
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I"C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\libjpeg" /I"C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\libtiff" /Zi /nologo /W3 /WX- /Od /Oi /Oy- /D WIN32 /D NDEBUG /D _LIB /D _WINDLL /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt "scm-cache.cpp" "scm-file.cpp" "scm-frame.cpp" "scm-image.cpp" "scm-index.cpp" "scm-label.cpp" "scm-log.cpp" "scm-path.cpp" "scm-render.cpp" "scm-sample.cpp" "scm-scene.cpp" "scm-set.cpp" "scm-sphere.cpp" "scm-step.cpp" "scm-system.cpp" "scm-task.cpp" "scm-transfb.cpp" util3d\glsl.cpp
+         scm-cache.cpp
+     1>c:\users\cod\documents\lsu\research\code\moon\scm\scm-file.hpp(36): warning C4099: 'scm_file' : type name first seen using 'struct' now seen using 'class'
+                 c:\users\cod\documents\lsu\research\code\moon\scm\scm-task.hpp(23) : see declaration of 'scm_file'
+         scm-file.cpp
+     1>c:\users\cod\documents\lsu\research\code\moon\scm\scm-file.hpp(36): warning C4099: 'scm_file' : type name first seen using 'struct' now seen using 'class'
+                 c:\users\cod\documents\lsu\research\code\moon\scm\scm-task.hpp(23) : see declaration of 'scm_file'
+     1>scm-file.cpp(73): warning C4244: 'argument' : conversion from 'uint64' to 'size_t', possible loss of data
+     1>scm-file.cpp(75): warning C4244: 'argument' : conversion from 'uint64' to 'size_t', possible loss of data
+     1>scm-file.cpp(86): warning C4244: 'argument' : conversion from 'uint64' to 'size_t', possible loss of data
+     1>scm-file.cpp(88): warning C4244: 'argument' : conversion from 'uint64' to 'size_t', possible loss of data
+     1>scm-file.cpp(99): warning C4244: 'argument' : conversion from 'uint64' to 'size_t', possible loss of data
+     1>scm-file.cpp(101): warning C4244: 'argument' : conversion from 'uint64' to 'size_t', possible loss of data
+     1>scm-file.cpp(112): warning C4244: 'argument' : conversion from 'uint64' to 'size_t', possible loss of data
+     1>scm-file.cpp(114): warning C4244: 'argument' : conversion from 'uint64' to 'size_t', possible loss of data
+     1>scm-file.cpp(298): warning C4244: 'argument' : conversion from 'const uint64' to 'size_t', possible loss of data
+     1>scm-file.cpp(487): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>scm-file.cpp(535): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(357) : see declaration of 'sprintf'
+         scm-frame.cpp
+         scm-image.cpp
+     1>c:\users\cod\documents\lsu\research\code\moon\scm\scm-file.hpp(36): warning C4099: 'scm_file' : type name first seen using 'struct' now seen using 'class'
+                 c:\users\cod\documents\lsu\research\code\moon\scm\scm-task.hpp(23) : see declaration of 'scm_file'
+         scm-index.cpp
+         scm-label.cpp
+     1>scm-label.cpp(106): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>scm-label.cpp(107): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>scm-label.cpp(108): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>scm-label.cpp(116): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>scm-label.cpp(117): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>scm-label.cpp(118): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>scm-label.cpp(126): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>scm-label.cpp(127): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>scm-label.cpp(128): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>scm-label.cpp(136): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>scm-label.cpp(137): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>scm-label.cpp(138): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>scm-label.cpp(162): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>scm-label.cpp(163): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>scm-label.cpp(164): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>scm-label.cpp(187): warning C4244: '=' : conversion from 'real' to 'float', possible loss of data
+     1>scm-label.cpp(188): warning C4244: '=' : conversion from 'real' to 'float', possible loss of data
+     1>scm-label.cpp(192): warning C4244: '=' : conversion from 'real' to 'float', possible loss of data
+     1>scm-label.cpp(193): warning C4244: '=' : conversion from 'real' to 'float', possible loss of data
+     1>scm-label.cpp(216): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(237) : see declaration of 'fscanf'
+     1>scm-label.cpp(220): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(237) : see declaration of 'fscanf'
+     1>scm-label.cpp(237): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(218) : see declaration of 'fopen'
+     1>scm-label.cpp(473): warning C4244: 'argument' : conversion from 'int' to 'GLfloat', possible loss of data
+         scm-log.cpp
+     1>scm-log.cpp(30): warning C4018: '<' : signed/unsigned mismatch
+     1>scm-log.cpp(35): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\string.h(115) : see declaration of 'strcat'
+     1>scm-log.cpp(52): warning C4996: 'vsprintf': This function or variable may be unsafe. Consider using vsprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(357) : see declaration of 'vsprintf'
+     1>scm-log.cpp(53): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(357) : see declaration of 'sprintf'
+     1>scm-log.cpp(74): warning C4996: 'vsprintf': This function or variable may be unsafe. Consider using vsprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(357) : see declaration of 'vsprintf'
+     1>scm-log.cpp(75): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(357) : see declaration of 'sprintf'
+     1>scm-log.cpp(96): warning C4996: 'vsprintf': This function or variable may be unsafe. Consider using vsprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(357) : see declaration of 'vsprintf'
+     1>scm-log.cpp(97): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(357) : see declaration of 'sprintf'
+         scm-path.cpp
+     1>scm-path.cpp(57): warning C4996: 'getenv': This function or variable may be unsafe. Consider using _dupenv_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdlib.h(453) : see declaration of 'getenv'
+         scm-render.cpp
+     1>scm-render.cpp(419): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>scm-render.cpp(426): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+         scm-sample.cpp
+     1>c:\users\cod\documents\lsu\research\code\moon\scm\scm-file.hpp(36): warning C4099: 'scm_file' : type name first seen using 'struct' now seen using 'class'
+                 c:\users\cod\documents\lsu\research\code\moon\scm\scm-sample.hpp(22) : see declaration of 'scm_file'
+     1>scm-sample.cpp(146): warning C4244: '=' : conversion from 'real' to 'float', possible loss of data
+         scm-scene.cpp
+         scm-set.cpp
+         scm-sphere.cpp
+         scm-step.cpp
+         scm-system.cpp
+     1>c:\users\cod\documents\lsu\research\code\moon\scm\scm-file.hpp(36): warning C4099: 'scm_file' : type name first seen using 'struct' now seen using 'class'
+                 c:\users\cod\documents\lsu\research\code\moon\scm\scm-task.hpp(23) : see declaration of 'scm_file'
+     1>scm-system.cpp(40): warning C4996: 'getcwd': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _getcwd. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\direct.h(130) : see declaration of 'getcwd'
+         scm-task.cpp
+     1>c:\users\cod\documents\lsu\research\code\moon\scm\scm-file.hpp(36): warning C4099: 'scm_file' : type name first seen using 'struct' now seen using 'class'
+                 c:\users\cod\documents\lsu\research\code\moon\scm\scm-task.hpp(23) : see declaration of 'scm_file'
+         scm-transfb.cpp
+     1>scm-transfb.cpp(27): warning C4244: 'argument' : conversion from 'unsigned __int64' to 'GLsizeiptr', possible loss of data
+     1>scm-transfb.cpp(77): warning C4244: 'argument' : conversion from 'unsigned __int64' to 'size_t', possible loss of data
+     1>scm-transfb.cpp(78): warning C4244: 'argument' : conversion from 'unsigned __int64' to 'GLsizeiptr', possible loss of data
+     1>scm-transfb.cpp(107): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\string.h(110) : see declaration of 'strcpy'
+     1>scm-transfb.cpp(112): warning C4244: 'return' : conversion from 'unsigned __int64' to 'int', possible loss of data
+         glsl.cpp
+     1>util3d\glsl.cpp(52): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(218) : see declaration of 'fopen'
+     1>util3d\glsl.cpp(290): warning C4996: 'vsprintf': This function or variable may be unsafe. Consider using vsprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(357) : see declaration of 'vsprintf'
+         Generating Code...
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I"C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\libjpeg" /I"C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\libtiff" /Zi /nologo /W3 /WX- /Od /Oi /Oy- /D WIN32 /D NDEBUG /D _LIB /D _WINDLL /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc110.pdb" /Gd /TC /analyze- /errorReport:prompt util3d\demo.c util3d\image.c util3d\math3d.c util3d\noise.c "util3d\obj-sphere.c" util3d\obj.c util3d\plane.c util3d\type.c
+         demo.c
+     1>c:\users\cod\documents\lsu\research\code\moon\scm\util3d\systime.h(47): warning C4996: '__timezone': This function or variable may be unsafe. Consider using _get_timezone instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\time.h(139) : see declaration of '__timezone'
+     1>c:\users\cod\documents\lsu\research\code\moon\scm\util3d\systime.h(48): warning C4996: '__daylight': This function or variable may be unsafe. Consider using _get_daylight instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\time.h(131) : see declaration of '__daylight'
+     1>util3d\demo.c(101): warning C4996: 'getenv': This function or variable may be unsafe. Consider using _dupenv_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdlib.h(453) : see declaration of 'getenv'
+     1>util3d\demo.c(103): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(218) : see declaration of 'fopen'
+     1>util3d\demo.c(126): warning C4996: 'getenv': This function or variable may be unsafe. Consider using _dupenv_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdlib.h(453) : see declaration of 'getenv'
+     1>util3d\demo.c(128): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(218) : see declaration of 'fopen'
+     1>util3d\demo.c(138): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(237) : see declaration of 'fscanf'
+     1>util3d\demo.c(176): warning C4305: '=' : truncation from 'double' to 'GLfloat'
+     1>util3d\demo.c(333): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>util3d\demo.c(334): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>util3d\demo.c(346): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>util3d\demo.c(347): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>util3d\demo.c(361): warning C4305: '=' : truncation from 'double' to 'GLfloat'
+     1>util3d\demo.c(501): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(357) : see declaration of 'sprintf'
+         image.c
+     1>util3d\image.c(746): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(218) : see declaration of 'fopen'
+     1>util3d\image.c(747): warning C4996: 'strerror': This function or variable may be unsafe. Consider using strerror_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\string.h(164) : see declaration of 'strerror'
+     1>util3d\image.c(808): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(218) : see declaration of 'fopen'
+     1>util3d\image.c(809): warning C4996: 'strerror': This function or variable may be unsafe. Consider using strerror_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\string.h(164) : see declaration of 'strerror'
+     1>util3d\image.c(882): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(218) : see declaration of 'fopen'
+     1>util3d\image.c(925): warning C4996: 'strerror': This function or variable may be unsafe. Consider using strerror_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\string.h(164) : see declaration of 'strerror'
+     1>util3d\image.c(937): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(218) : see declaration of 'fopen'
+     1>util3d\image.c(979): warning C4996: 'strerror': This function or variable may be unsafe. Consider using strerror_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\string.h(164) : see declaration of 'strerror'
+     1>util3d\image.c(1147): warning C4018: '<' : signed/unsigned mismatch
+     1>util3d\image.c(1171): warning C4018: '<' : signed/unsigned mismatch
+     1>util3d\image.c(1349): warning C4244: 'function' : conversion from 'double' to 'float', possible loss of data
+     1>util3d\image.c(1350): warning C4244: 'function' : conversion from 'double' to 'float', possible loss of data
+     1>util3d\image.c(1363): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+         math3d.c
+         noise.c
+         obj-sphere.c
+         obj.c
+     1>util3d\obj.c(321): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>util3d\obj.c(352): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(311) : see declaration of 'sscanf'
+     1>util3d\obj.c(360): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(311) : see declaration of 'sscanf'
+     1>util3d\obj.c(362): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(311) : see declaration of 'sscanf'
+     1>util3d\obj.c(364): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(311) : see declaration of 'sscanf'
+     1>util3d\obj.c(369): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(311) : see declaration of 'sscanf'
+     1>util3d\obj.c(371): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(311) : see declaration of 'sscanf'
+     1>util3d\obj.c(373): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(311) : see declaration of 'sscanf'
+     1>util3d\obj.c(378): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\string.h(191) : see declaration of 'strncpy'
+     1>util3d\obj.c(379): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\string.h(191) : see declaration of 'strncpy'
+     1>util3d\obj.c(380): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\string.h(191) : see declaration of 'strncpy'
+     1>util3d\obj.c(381): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\string.h(191) : see declaration of 'strncpy'
+     1>util3d\obj.c(390): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(357) : see declaration of 'sprintf'
+     1>util3d\obj.c(405): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(311) : see declaration of 'sscanf'
+     1>util3d\obj.c(417): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(311) : see declaration of 'sscanf'
+     1>util3d\obj.c(418): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>util3d\obj.c(437): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(357) : see declaration of 'sprintf'
+     1>util3d\obj.c(439): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(218) : see declaration of 'fopen'
+     1>util3d\obj.c(444): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(311) : see declaration of 'sscanf'
+     1>util3d\obj.c(454): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(311) : see declaration of 'sscanf'
+     1>util3d\obj.c(505): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(311) : see declaration of 'sscanf'
+     1>util3d\obj.c(517): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(311) : see declaration of 'sscanf'
+     1>util3d\obj.c(555): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(311) : see declaration of 'sscanf'
+     1>util3d\obj.c(556): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(311) : see declaration of 'sscanf'
+     1>util3d\obj.c(557): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(311) : see declaration of 'sscanf'
+     1>util3d\obj.c(558): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(311) : see declaration of 'sscanf'
+     1>util3d\obj.c(692): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(311) : see declaration of 'sscanf'
+     1>util3d\obj.c(693): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(311) : see declaration of 'sscanf'
+     1>util3d\obj.c(798): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(311) : see declaration of 'sscanf'
+     1>util3d\obj.c(812): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(311) : see declaration of 'sscanf'
+     1>util3d\obj.c(827): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(311) : see declaration of 'sscanf'
+     1>util3d\obj.c(853): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(218) : see declaration of 'fopen'
+     1>util3d\obj.c(866): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\string.h(191) : see declaration of 'strncpy'
+     1>util3d\obj.c(872): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(311) : see declaration of 'sscanf'
+     1>util3d\obj.c(1186): warning C4018: '>' : signed/unsigned mismatch
+     1>util3d\obj.c(1187): warning C4018: '>' : signed/unsigned mismatch
+     1>util3d\obj.c(1188): warning C4018: '>' : signed/unsigned mismatch
+     1>util3d\obj.c(1202): warning C4018: '>' : signed/unsigned mismatch
+     1>util3d\obj.c(1203): warning C4018: '>' : signed/unsigned mismatch
+     1>util3d\obj.c(1264): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>util3d\obj.c(2230): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(218) : see declaration of 'fopen'
+     1>util3d\obj.c(2278): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(218) : see declaration of 'fopen'
+     1>util3d\obj.c(2293): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(357) : see declaration of 'sprintf'
+     1>util3d\obj.c(2294): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(357) : see declaration of 'sprintf'
+     1>util3d\obj.c(2295): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdio.h(357) : see declaration of 'sprintf'
+         plane.c
+         type.c
+     1>util3d\type.c(372): warning C4244: '=' : conversion from 'const double' to 'float', possible loss of data
+     1>util3d\type.c(373): warning C4244: '=' : conversion from 'const double' to 'float', possible loss of data
+     1>util3d\type.c(374): warning C4244: '=' : conversion from 'const double' to 'float', possible loss of data
+     1>util3d\type.c(378): warning C4244: '=' : conversion from 'const double' to 'float', possible loss of data
+     1>util3d\type.c(379): warning C4244: '=' : conversion from 'const double' to 'float', possible loss of data
+     1>util3d\type.c(380): warning C4244: '=' : conversion from 'const double' to 'float', possible loss of data
+     1>util3d\type.c(384): warning C4244: '=' : conversion from 'const double' to 'float', possible loss of data
+     1>util3d\type.c(385): warning C4244: '=' : conversion from 'const double' to 'float', possible loss of data
+     1>util3d\type.c(386): warning C4244: '=' : conversion from 'const double' to 'float', possible loss of data
+     1>util3d\type.c(390): warning C4244: '=' : conversion from 'const double' to 'float', possible loss of data
+     1>util3d\type.c(391): warning C4244: '=' : conversion from 'const double' to 'float', possible loss of data
+     1>util3d\type.c(392): warning C4244: '=' : conversion from 'const double' to 'float', possible loss of data
+     1>util3d\type.c(396): warning C4244: 'return' : conversion from 'float' to 'int', possible loss of data
+     1>util3d\type.c(429): warning C4244: '+=' : conversion from 'float' to 'int', possible loss of data
+     1>util3d\type.c(544): warning C4244: '+=' : conversion from 'float' to 'int', possible loss of data
+     1>util3d\type.c(551): warning C4244: '+=' : conversion from 'float' to 'int', possible loss of data
+         Generating Code...
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\COD\Documents\LSU\Research\Code\Moon\Client\Release\SCM.dll" /NOLOGO freeglut.lib glew32.lib freetype.lib SDL2.lib SDL2main.lib libpng.lib libtiff.lib jpeg.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\COD\Documents\LSU\Research\Code\Moon\Client\Release\SCM.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\COD\Documents\LSU\Research\Code\Moon\Client\Release\SCM.lib" /MACHINE:X86 /DLL "Release\scm-cache.obj"
+         "Release\scm-file.obj"
+         "Release\scm-frame.obj"
+         "Release\scm-image.obj"
+         "Release\scm-index.obj"
+         "Release\scm-label.obj"
+         "Release\scm-log.obj"
+         "Release\scm-path.obj"
+         "Release\scm-render.obj"
+         "Release\scm-sample.obj"
+         "Release\scm-scene.obj"
+         "Release\scm-set.obj"
+         "Release\scm-sphere.obj"
+         "Release\scm-step.obj"
+         "Release\scm-system.obj"
+         "Release\scm-task.obj"
+         "Release\scm-transfb.obj"
+         Release\demo.obj
+         Release\glsl.obj
+         Release\image.obj
+         Release\math3d.obj
+         Release\noise.obj
+         "Release\obj-sphere.obj"
+         Release\obj.obj
+         Release\plane.obj
+         Release\type.obj
+     1>LINK : warning LNK4098: defaultlib 'MSVCRTD' conflicts with use of other libs; use /NODEFAULTLIB:library
+     1>LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
+     1>libtiff.lib(tif_dirwrite.obj) : error LNK2019: unresolved external symbol __dtoui3 referenced in function _TIFFWriteDirectoryTagSampleformatArray
+     1>libtiff.lib(tif_dirwrite.obj) : error LNK2019: unresolved external symbol __ftoui3 referenced in function _TIFFWriteDirectoryTagCheckedRationalArray
+     1>libtiff.lib(tif_dirread.obj) : error LNK2019: unresolved external symbol __ltod3 referenced in function _TIFFReadDirEntryFloat
+     1>libtiff.lib(tif_aux.obj) : error LNK2001: unresolved external symbol __ltod3
+     1>libtiff.lib(tif_dirread.obj) : error LNK2019: unresolved external symbol __ultod3 referenced in function _TIFFReadDirEntryFloat
+     1>C:\Users\COD\Documents\LSU\Research\Code\Moon\Client\Release\SCM.dll : fatal error LNK1120: 4 unresolved externals
+     1>Done Building Project "C:\Users\COD\Documents\LSU\Research\Code\Moon\scm\SCM.vcxproj" (Rebuild target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:11.63

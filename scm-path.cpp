@@ -31,9 +31,11 @@
 
 static bool exists(const std::string& path)
 {
-    struct stat info;
+    /// Changed stat to _stat64
+    struct _stat64 info;
 
-    if (stat(path.c_str(), &info) == 0)
+    /// Changed stat to _stat64
+    if (_stat64(path.c_str(), &info) == 0)
         return ((info.st_mode & S_IFMT) == S_IFREG);
     else
         return false;
@@ -46,7 +48,10 @@ std::string scm_path_search(const std::string& file)
     // If the given file name is absolute, use it.
 
     if (exists(file))
+    {
+        scm_log(("absolute path given and file exists: " + file).c_str());
         return file;
+    }
 
     // Otherwise, search the SCM path for the file.
 

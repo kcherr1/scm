@@ -23,28 +23,30 @@ struct scm_file;
 
 //------------------------------------------------------------------------------
 
-class scm_sample
-{
+class scm_sample {
 public:
 
-    scm_sample(scm_file *);
-   ~scm_sample();
+  scm_sample(scm_file *);
+  ~scm_sample();
 
-    float get(const double *);
+  float get(const double *);
+  float* get4v(const double *);
 
 private:
 
-    float lookup(int, int) const;
+  float lookup(int, int) const;
+  float* lookup4v(int, int) const;
 
-    TIFF     *tiff;
-    scm_file *file;
+  TIFF     *tiff;
+  scm_file *file;
 
-    double  last_v[3];  // Sample cache last vector
-    float   last_k;     // Sample cache last value
-    uint64  last_o;     // Sample cache last page offset
-    tsize_t last_i0;    // Sample cache last strip
-    tsize_t last_i1;    // Sample cache last strip
-    uint8  *last_p;     // Sample cache last page buffer
+  double  last_v[3];  // Sample cache last vector
+  float   last_k;     // Sample cache last value
+  float*  last_k4v;   // Sample cache last value
+  uint64  last_o;     // Sample cache last page offset
+  tsize_t last_i0;    // Sample cache last strip
+  tsize_t last_i1;    // Sample cache last strip
+  uint8  *last_p;     // Sample cache last page buffer
 };
 
 //------------------------------------------------------------------------------

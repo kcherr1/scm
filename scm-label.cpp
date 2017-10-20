@@ -19,7 +19,7 @@
 
 #include "util3d/math3d.h"
 #include "util3d/type.h"
-#include "util3d/glsl.h"
+#include "util3d/glsl.hpp"
 
 #include "scm-label.hpp"
 #include "scm-path.hpp"
@@ -29,7 +29,7 @@
 
 static double clamp(double k, double a, double b)
 {
-    if      (k < a) return a;
+    if (k < a) return a;
     else if (k > b) return b;
     else            return k;
 }
@@ -113,9 +113,9 @@ struct circle
         p[0].c[2] = 255;
         p[0].c[3] = a;
 
-        p[1].v[0] = M.M[0] * ( s) + M.M[4] * (-s) + M.M[12];
-        p[1].v[1] = M.M[1] * ( s) + M.M[5] * (-s) + M.M[13];
-        p[1].v[2] = M.M[2] * ( s) + M.M[6] * (-s) + M.M[14];
+        p[1].v[0] = M.M[0] * (s)+M.M[4] * (-s) + M.M[12];
+        p[1].v[1] = M.M[1] * (s)+M.M[5] * (-s) + M.M[13];
+        p[1].v[2] = M.M[2] * (s)+M.M[6] * (-s) + M.M[14];
         p[1].t[0] = 0;
         p[1].t[1] = 1;
         p[1].c[0] = 255;
@@ -123,9 +123,9 @@ struct circle
         p[1].c[2] = 255;
         p[1].c[3] = a;
 
-        p[2].v[0] = M.M[0] * ( s) + M.M[4] * ( s) + M.M[12];
-        p[2].v[1] = M.M[1] * ( s) + M.M[5] * ( s) + M.M[13];
-        p[2].v[2] = M.M[2] * ( s) + M.M[6] * ( s) + M.M[14];
+        p[2].v[0] = M.M[0] * (s)+M.M[4] * (s)+M.M[12];
+        p[2].v[1] = M.M[1] * (s)+M.M[5] * (s)+M.M[13];
+        p[2].v[2] = M.M[2] * (s)+M.M[6] * (s)+M.M[14];
         p[2].t[0] = 1;
         p[2].t[1] = 1;
         p[2].c[0] = 255;
@@ -133,9 +133,9 @@ struct circle
         p[2].c[2] = 255;
         p[2].c[3] = a;
 
-        p[3].v[0] = M.M[0] * (-s) + M.M[4] * ( s) + M.M[12];
-        p[3].v[1] = M.M[1] * (-s) + M.M[5] * ( s) + M.M[13];
-        p[3].v[2] = M.M[2] * (-s) + M.M[6] * ( s) + M.M[14];
+        p[3].v[0] = M.M[0] * (-s) + M.M[4] * (s)+M.M[12];
+        p[3].v[1] = M.M[1] * (-s) + M.M[5] * (s)+M.M[13];
+        p[3].v[2] = M.M[2] * (-s) + M.M[6] * (s)+M.M[14];
         p[3].t[0] = 1;
         p[3].t[1] = 0;
         p[3].c[0] = 255;
@@ -196,8 +196,8 @@ struct latlon
             p[i].v[0] = rad * sinf(T) * cosf(P);
             p[i].v[1] = rad *           sinf(P);
             p[i].v[2] = rad * cosf(T) * cosf(P);
-            p[i].t[0] =   0;
-            p[i].t[1] =   0;
+            p[i].t[0] = 0;
+            p[i].t[1] = 0;
             p[i].c[0] = 127;
             p[i].c[1] = 127;
             p[i].c[2] = 127;
@@ -216,7 +216,7 @@ int scm_label::scan(FILE *fp, label& L)
         L.str, &L.lat, &L.lon, &L.dia, &L.rad, &L.typ[0], &L.typ[1], &n) > 5)
         return n;
 
-    if (fscanf(fp,      "%63[^,],%f,%f,%f,%f,%c%c\n%n",
+    if (fscanf(fp, "%63[^,],%f,%f,%f,%f,%c%c\n%n",
         L.str, &L.lat, &L.lon, &L.dia, &L.rad, &L.typ[0], &L.typ[1], &n) > 5)
         return n;
 
@@ -267,17 +267,17 @@ scm_label::scm_label(const std::string& file, int size) :
 
     // Initialize the shaders.
 
-    memset(&circle_glsl, 0, sizeof (glsl));
-    memset(&sprite_glsl, 0, sizeof (glsl));
+    memset(&circle_glsl, 0, sizeof(glsl));
+    memset(&sprite_glsl, 0, sizeof(glsl));
 
-    glsl_source(&circle_glsl, (const char *) scm_label_circle_vert,
-                                             scm_label_circle_vert_len,
-                              (const char *) scm_label_circle_frag,
-                                             scm_label_circle_frag_len);
-    glsl_source(&sprite_glsl, (const char *) scm_label_sprite_vert,
-                                             scm_label_sprite_vert_len,
-                              (const char *) scm_label_sprite_frag,
-                                             scm_label_sprite_frag_len);
+    glsl_source(&circle_glsl, (const char *)scm_label_circle_vert,
+        scm_label_circle_vert_len,
+        (const char *)scm_label_circle_frag,
+        scm_label_circle_frag_len);
+    glsl_source(&sprite_glsl, (const char *)scm_label_sprite_vert,
+        scm_label_sprite_vert_len,
+        (const char *)scm_label_sprite_frag,
+        scm_label_sprite_frag_len);
 
     glUseProgram(sprite_glsl.program);
     glUniform1i(glGetUniformLocation(sprite_glsl.program, "icons"), 0);
@@ -297,7 +297,7 @@ scm_label::scm_label(const std::string& file, int size) :
     for (int i = 0; i < int(labels.size()); ++i)
     {
         int w = line_length(labels[i].str, label_font);
-        int h = font_height(               label_font);
+        int h = font_height(label_font);
 
         matrix M;
         double x = -w / 2.0;
@@ -310,7 +310,7 @@ scm_label::scm_label(const std::string& file, int size) :
 
         // Transform it into position
 
-        M.rotatey( radians(labels[i].lon));
+        M.rotatey(radians(labels[i].lon));
         M.rotatex(-radians(labels[i].lat));
         M.translate(0, 0, r);
         M.scale(d);
@@ -355,41 +355,50 @@ scm_label::scm_label(const std::string& file, int size) :
     num_sprites = sprite_v.size();
     num_latlons = latlon_v.size();
 
-    size_t sz = sizeof (point);
+    size_t sz = sizeof(point);
 
     // Typeset the labels.
 
     if (!string_v.empty())
         label_line = line_layout(string_v.size(), &string_v.front(), NULL,
-                                                   matrix_v.front().M, label_font);
+            matrix_v.front().M, label_font);
 
     // Create a VBO for the circles.
 
-    glGenBuffers(1,              &circle_vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, circle_vbo);
-    glBufferData(GL_ARRAY_BUFFER, 4 * sz * circle_v.size(),
-                                          &circle_v.front(), GL_STATIC_DRAW);
+    glGenBuffers(1, &circle_vbo);
+    if (num_circles > 0)
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, circle_vbo);
+        glBufferData(GL_ARRAY_BUFFER, 4 * sz * circle_v.size(),
+            &circle_v.front(), GL_STATIC_DRAW);
+    }
 
     // Create a VBO for the sprites.
 
-    glGenBuffers(1,              &sprite_vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, sprite_vbo);
-    glBufferData(GL_ARRAY_BUFFER, 1 * sz * sprite_v.size(),
-                                          &sprite_v.front(), GL_STATIC_DRAW);
+    glGenBuffers(1, &sprite_vbo);
+    if (num_sprites > 0)
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, sprite_vbo);
+        glBufferData(GL_ARRAY_BUFFER, 1 * sz * sprite_v.size(),
+            &sprite_v.front(), GL_STATIC_DRAW);
+    }
 
     // Create a VBO for the latlons.
 
-    glGenBuffers(1,              &latlon_vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, latlon_vbo);
-    glBufferData(GL_ARRAY_BUFFER, 360 * sz * latlon_v.size(),
-                                            &latlon_v.front(), GL_STATIC_DRAW);
+    glGenBuffers(1, &latlon_vbo);
+    if (num_latlons > 0)
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, latlon_vbo);
+        glBufferData(GL_ARRAY_BUFFER, 360 * sz * latlon_v.size(),
+            &latlon_v.front(), GL_STATIC_DRAW);
+    }
 
     // Create a texture for the sprites.
 
-    glGenTextures(1,             &sprite_tex);
+    glGenTextures(1, &sprite_tex);
     glBindTexture(GL_TEXTURE_2D, sprite_tex);
-    glTexImage2D (GL_TEXTURE_2D, 0, GL_LUMINANCE, 128, 32, 0,
-                  GL_LUMINANCE, GL_UNSIGNED_BYTE, scm_label_icons);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, 128, 32, 0,
+        GL_LUMINANCE, GL_UNSIGNED_BYTE, scm_label_icons);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -416,7 +425,7 @@ scm_label::~scm_label()
 
 void scm_label::draw(GLubyte r, GLubyte g, GLubyte b, GLubyte a)
 {
-    size_t sz = sizeof (point);
+    size_t sz = sizeof(point);
 
     glPushAttrib(GL_ENABLE_BIT | GL_POLYGON_BIT);
     {
@@ -445,9 +454,9 @@ void scm_label::draw(GLubyte r, GLubyte g, GLubyte b, GLubyte a)
             // glEnable(GL_CLIP_PLANE0);
 
             glBindBuffer(GL_ARRAY_BUFFER, latlon_vbo);
-            glVertexPointer  (3, GL_FLOAT,         sz, (GLvoid *)  0);
-            glTexCoordPointer(2, GL_FLOAT,         sz, (GLvoid *) 12);
-            glColorPointer   (4, GL_UNSIGNED_BYTE, sz, (GLvoid *) 20);
+            glVertexPointer(3, GL_FLOAT, sz, (GLvoid *)0);
+            glTexCoordPointer(2, GL_FLOAT, sz, (GLvoid *)12);
+            glColorPointer(4, GL_UNSIGNED_BYTE, sz, (GLvoid *)20);
 
             glUseProgram(0);
             for (int i = 0; i < num_latlons; i++)
@@ -456,9 +465,9 @@ void scm_label::draw(GLubyte r, GLubyte g, GLubyte b, GLubyte a)
             // Draw the circles.
 
             glBindBuffer(GL_ARRAY_BUFFER, circle_vbo);
-            glVertexPointer  (3, GL_FLOAT,         sz, (GLvoid *)  0);
-            glTexCoordPointer(2, GL_FLOAT,         sz, (GLvoid *) 12);
-            glColorPointer   (4, GL_UNSIGNED_BYTE, sz, (GLvoid *) 20);
+            glVertexPointer(3, GL_FLOAT, sz, (GLvoid *)0);
+            glTexCoordPointer(2, GL_FLOAT, sz, (GLvoid *)12);
+            glColorPointer(4, GL_UNSIGNED_BYTE, sz, (GLvoid *)20);
 
             glUseProgram(circle_glsl.program);
             glDrawArrays(GL_QUADS, 0, 4 * num_circles);
@@ -466,9 +475,9 @@ void scm_label::draw(GLubyte r, GLubyte g, GLubyte b, GLubyte a)
             // Draw the sprites.
 
             glBindBuffer(GL_ARRAY_BUFFER, sprite_vbo);
-            glVertexPointer  (3, GL_FLOAT,         sz, (GLvoid *)  0);
-            glTexCoordPointer(2, GL_FLOAT,         sz, (GLvoid *) 12);
-            glColorPointer   (4, GL_UNSIGNED_BYTE, sz, (GLvoid *) 20);
+            glVertexPointer(3, GL_FLOAT, sz, (GLvoid *)0);
+            glTexCoordPointer(2, GL_FLOAT, sz, (GLvoid *)12);
+            glColorPointer(4, GL_UNSIGNED_BYTE, sz, (GLvoid *)20);
 
             glPointSize(sprite_size);
             glEnable(GL_POINT_SPRITE);

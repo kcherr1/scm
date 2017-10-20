@@ -9,10 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Source Files\util3d">
       <UniqueIdentifier>{65297484-bc78-45ed-a701-6767ad3fc6f5}</UniqueIdentifier>
     </Filter>
@@ -69,35 +65,38 @@
     <ClCompile Include="scm-task.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="util3d\cube.c">
+    <ClCompile Include="util3d\math3d.c">
+      <Filter>Source Files\util3d</Filter>
+    </ClCompile>
+    <ClCompile Include="util3d\type.c">
       <Filter>Source Files\util3d</Filter>
     </ClCompile>
     <ClCompile Include="util3d\demo.c">
       <Filter>Source Files\util3d</Filter>
     </ClCompile>
-    <ClCompile Include="util3d\glsl.c">
-      <Filter>Source Files\util3d</Filter>
-    </ClCompile>
     <ClCompile Include="util3d\image.c">
-      <Filter>Source Files\util3d</Filter>
-    </ClCompile>
-    <ClCompile Include="util3d\math3d.c">
       <Filter>Source Files\util3d</Filter>
     </ClCompile>
     <ClCompile Include="util3d\noise.c">
       <Filter>Source Files\util3d</Filter>
     </ClCompile>
-    <ClCompile Include="util3d\obj-sphere.c">
+    <ClCompile Include="util3d\obj.c">
       <Filter>Source Files\util3d</Filter>
     </ClCompile>
-    <ClCompile Include="util3d\obj.c">
+    <ClCompile Include="util3d\obj-sphere.c">
       <Filter>Source Files\util3d</Filter>
     </ClCompile>
     <ClCompile Include="util3d\plane.c">
       <Filter>Source Files\util3d</Filter>
     </ClCompile>
-    <ClCompile Include="util3d\type.c">
+    <ClCompile Include="scm-transfb.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="util3d\glsl.cpp">
       <Filter>Source Files\util3d</Filter>
+    </ClCompile>
+    <ClCompile Include="SCM_wrap.cxx">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -167,43 +166,10 @@
     <ClInclude Include="scm-task.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scm-label-circle-frag.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="scm-label-circle-vert.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="scm-label-sprite-frag.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="scm-label-sprite-vert.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="scm-render-blur-frag.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="scm-render-blur-vert.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="scm-render-both-frag.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="scm-render-both-vert.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="scm-render-fade-frag.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="scm-render-fade-vert.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="util3d\cube.h">
       <Filter>Header Files\util3d</Filter>
     </ClInclude>
     <ClInclude Include="util3d\demo.h">
-      <Filter>Header Files\util3d</Filter>
-    </ClInclude>
-    <ClInclude Include="util3d\glsl.h">
       <Filter>Header Files\util3d</Filter>
     </ClInclude>
     <ClInclude Include="util3d\image.h">
@@ -230,5 +196,23 @@
     <ClInclude Include="util3d\systime.h">
       <Filter>Header Files\util3d</Filter>
     </ClInclude>
+    <ClInclude Include="util3d\glsl.hpp">
+      <Filter>Header Files\util3d</Filter>
+    </ClInclude>
+    <ClInclude Include="scm-transfb.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scm-debug-shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="util3d\read-tiff-results.h">
+      <Filter>Header Files\util3d</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="SCM.i" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CacheGenSearch.cd" />
   </ItemGroup>
 </Project>

@@ -17,6 +17,7 @@
 #include <vector>
 #include <set>
 
+#include "scm-transfb.hpp"
 #include "scm-scene.hpp"
 
 //------------------------------------------------------------------------------
@@ -36,6 +37,11 @@ public:
 
     int  get_detail() const { return detail; }
     int  get_limit () const { return limit;  }
+
+    scm_transfb *transfb;
+    void capture_next_frame();
+    int ready_to_capture();
+    void set_num_fb_verts(unsigned long long);
 
     void set_zoom(double x, double y, double z, double k)
     {

@@ -39,11 +39,11 @@ typedef std::vector<scm_scene *>::iterator scm_scene_i;
 
 struct active_pair
 {
-    active_pair()                          : file(0), cache(0) { }
-    active_pair(scm_file *f, scm_cache *c) : file(f), cache(c) { }
+  active_pair()                          : file(0), cache(0) { }
+  active_pair(scm_file *f, scm_cache *c) : file(f), cache(c) { }
 
-    scm_file  *file;
-    scm_cache *cache;
+  scm_file  *file;
+  scm_cache *cache;
 };
 
 typedef std::map<int, active_pair> active_pair_m;
@@ -52,11 +52,11 @@ typedef std::map<int, active_pair> active_pair_m;
 
 struct active_file
 {
-    active_file() : file(0), uses(0), index(-1) { }
+  active_file() : file(0), uses(0), index(-1) { }
 
-    scm_file  *file;
-    int        uses;
-    int        index;
+  scm_file  *file;
+  int        uses;
+  int        index;
 };
 
 typedef std::map<std::string, active_file> active_file_m;
@@ -65,28 +65,28 @@ typedef std::map<std::string, active_file> active_file_m;
 
 struct active_cache
 {
-    active_cache() : cache(0), uses(0) { }
+  active_cache() : cache(0), uses(0) { }
 
-    scm_cache *cache;
-    int        uses;
+  scm_cache *cache;
+  int        uses;
 };
 
 struct cache_param
 {
-    cache_param(scm_file *file) : n(int(file->get_w()) - 2),
-                                  c(int(file->get_c())),
-                                  b(int(file->get_b())) { }
-    int n;
-    int c;
-    int b;
-    bool operator<(const cache_param& that) const {
-        if      (n < that.n) return true;
-        else if (n > that.n) return false;
-        else if (c < that.c) return true;
-        else if (c > that.c) return false;
-        else if (b < that.b) return true;
-        else                 return false;
-    }
+  cache_param(scm_file *file) : n(int(file->get_w()) - 2),
+    c(int(file->get_c())),
+    b(int(file->get_b())) { }
+  int n;
+  int c;
+  int b;
+  bool operator<(const cache_param& that) const {
+    if      (n < that.n) return true;
+    else if (n > that.n) return false;
+    else if (c < that.c) return true;
+    else if (c > that.c) return false;
+    else if (b < that.b) return true;
+    else                 return false;
+  }
 };
 
 typedef std::map<cache_param, active_cache>           active_cache_m;
@@ -97,86 +97,86 @@ typedef std::map<cache_param, active_cache>::iterator active_cache_i;
 class scm_system
 {
 public:
+  // External Interface
 
-    // External Interface
+  scm_system(int, int, int, int);
+  ~scm_system();
 
-    scm_system(int, int, int, int);
-   ~scm_system();
+  void render_sphere(const double *P, const double *M, int channel) const;
 
-    void     render_sphere(const double *, const double *, int) const;
+  void      flush_cache();
+  void     render_cache();
+  void     update_cache();
 
-    void      flush_cache();
-    void     render_cache();
-    void     update_cache();
+  void      flush_queue();
+  void     import_queue(const std::string&);
+  void     export_queue(      std::string&);
+  void     append_queue(scm_step *);
+  void     render_queue();
 
-    void      flush_queue();
-    void     import_queue(const std::string&);
-    void     export_queue(      std::string&);
-    void     append_queue(scm_step *);
-    void     render_queue();
+  int         add_scene(int);
+  void        del_scene(int);
+  scm_scene  *get_scene(int);
 
-    int         add_scene(int);
-    void        del_scene(int);
-    scm_scene  *get_scene(int);
+  int         add_step(int);
+  void        del_step(int);
+  scm_step   *get_step(int);
 
-    int         add_step(int);
-    void        del_step(int);
-    scm_step   *get_step(int);
+  int         get_scene_count()      const { return int(scenes.size()); }
+  double      set_scene_blend(double);
 
-    int         get_scene_count()      const { return int(scenes.size()); }
-    double      set_scene_blend(double);
+  int         get_step_count()       const { return int( steps.size()); }
+  scm_step    get_step_blend(double) const;
 
-    int         get_step_count()       const { return int( steps.size()); }
-    scm_step    get_step_blend(double) const;
+  bool        get_synchronous() const { return sync; }
+  void        set_synchronous(bool b) { sync = b;    }
 
-    bool        get_synchronous() const { return sync; }
-    void        set_synchronous(bool b) { sync = b;    }
+  float       get_current_ground(const double *v) const;
+  float       get_minimum_ground()               const;
 
-    float       get_current_ground(const double *) const;
-    float       get_minimum_ground()               const;
+  scm_sphere *get_sphere() const { return sphere; }
+  scm_render *get_render() const { return render; }
 
-    scm_sphere *get_sphere() const { return sphere; }
-    scm_render *get_render() const { return render; }
+  scm_scene  *get_fore() const { return fore0; }
+  scm_scene  *get_back() const { return back0; }
 
-    scm_scene  *get_fore() const { return fore0; }
-    scm_scene  *get_back() const { return back0; }
+  // Internal Interface
 
-    // Internal Interface
+  int     acquire_scm(const std::string&);
+  int     release_scm(const std::string&);
 
-    int     acquire_scm(const std::string&);
-    int     release_scm(const std::string&);
+  scm_scene *find_scene(const std::string&) const;
+  scm_cache  *get_cache(int);
+  scm_file   *get_file (int);
 
-    scm_scene *find_scene(const std::string&) const;
-    scm_cache  *get_cache(int);
-    scm_file   *get_file (int);
-
-    float       get_page_sample(int, const double *v);
-    bool        get_page_status(int, long long);
-    void        get_page_bounds(int, long long, float&, float&);
+  float       get_page_sample(int, const double *v);
+  float*      get_page_sample4v(int, const double *v);
+  bool        get_page_status(int, long long);
+  void        get_page_bounds(int, long long, float&, float&);
 
 private:
 
-    SDL_mutex     *mutex;
+  SDL_mutex     *mutex;
 
-    scm_step_v     steps;
-    scm_step_v     queue;
-    scm_scene_v    scenes;
+  scm_step_v     steps;
+  scm_step_v     queue;
+  scm_scene_v    scenes;
 
-    scm_render    *render;
-    scm_sphere    *sphere;
-    scm_scene     *fore0;
-    scm_scene     *fore1;
-    scm_scene     *back0;
-    scm_scene     *back1;
+  scm_render    *render;
+  scm_sphere    *sphere;
+  scm_scene     *fore0;
+  scm_scene     *fore1;
+  scm_scene     *back0;
+  scm_scene     *back1;
 
-    active_file_m  files;
-    active_cache_m caches;
-    active_pair_m  pairs;
+  active_file_m  files;
+  active_cache_m caches;
+  active_pair_m  pairs;
 
-    int    serial;
-    int    frame;
-    bool   sync;
-    double fade;
+  int    serial;
+  int    frame;
+  bool   sync;
+  double fade;
 };
 
 //------------------------------------------------------------------------------

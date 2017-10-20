@@ -5,9 +5,17 @@
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
@@ -27,9 +35,10 @@
     <ClCompile Include="scm-step.cpp" />
     <ClCompile Include="scm-system.cpp" />
     <ClCompile Include="scm-task.cpp" />
-    <ClCompile Include="util3d\cube.c" />
+    <ClCompile Include="scm-transfb.cpp" />
+    <ClCompile Include="SCM_wrap.cxx" />
     <ClCompile Include="util3d\demo.c" />
-    <ClCompile Include="util3d\glsl.c" />
+    <ClCompile Include="util3d\glsl.cpp" />
     <ClCompile Include="util3d\image.c" />
     <ClCompile Include="util3d\math3d.c" />
     <ClCompile Include="util3d\noise.c" />
@@ -40,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scm-cache.hpp" />
+    <ClInclude Include="scm-debug-shader.h" />
     <ClInclude Include="scm-fifo.hpp" />
     <ClInclude Include="scm-file.hpp" />
     <ClInclude Include="scm-frame.hpp" />
@@ -47,22 +57,12 @@
     <ClInclude Include="scm-image.hpp" />
     <ClInclude Include="scm-index.hpp" />
     <ClInclude Include="scm-item.hpp" />
-    <ClInclude Include="scm-label-circle-frag.h" />
-    <ClInclude Include="scm-label-circle-vert.h" />
     <ClInclude Include="scm-label-font.h" />
     <ClInclude Include="scm-label-icons.h" />
-    <ClInclude Include="scm-label-sprite-frag.h" />
-    <ClInclude Include="scm-label-sprite-vert.h" />
     <ClInclude Include="scm-label.hpp" />
     <ClInclude Include="scm-log.hpp" />
     <ClInclude Include="scm-path.hpp" />
     <ClInclude Include="scm-queue.hpp" />
-    <ClInclude Include="scm-render-blur-frag.h" />
-    <ClInclude Include="scm-render-blur-vert.h" />
-    <ClInclude Include="scm-render-both-frag.h" />
-    <ClInclude Include="scm-render-both-vert.h" />
-    <ClInclude Include="scm-render-fade-frag.h" />
-    <ClInclude Include="scm-render-fade-vert.h" />
     <ClInclude Include="scm-render.hpp" />
     <ClInclude Include="scm-sample.hpp" />
     <ClInclude Include="scm-scene.hpp" />
@@ -71,35 +71,69 @@
     <ClInclude Include="scm-step.hpp" />
     <ClInclude Include="scm-system.hpp" />
     <ClInclude Include="scm-task.hpp" />
+    <ClInclude Include="scm-transfb.hpp" />
     <ClInclude Include="util3d\cube.h" />
     <ClInclude Include="util3d\demo.h" />
-    <ClInclude Include="util3d\glsl.h" />
+    <ClInclude Include="util3d\glsl.hpp" />
     <ClInclude Include="util3d\image.h" />
     <ClInclude Include="util3d\math3d.h" />
     <ClInclude Include="util3d\noise.h" />
     <ClInclude Include="util3d\obj-sphere.h" />
     <ClInclude Include="util3d\obj.h" />
     <ClInclude Include="util3d\plane.h" />
+    <ClInclude Include="util3d\read-tiff-results.h" />
     <ClInclude Include="util3d\systime.h" />
     <ClInclude Include="util3d\type.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="SCM.i">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">del "C:\Users\COD\Documents\LSU\Research\Code\Moon\SCM\*.cs"
+"C:\Program Files (x86)\Swig\swigwin-3.0.2\swig.exe" -c++ -csharp "%(FullPath)"
+</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">del "C:\Users\COD\Documents\LSU\Research\Code\Moon\SCM\*.cs"
+"C:\Program Files (x86)\Swig\swigwin-3.0.2\swig.exe" -c++ -csharp "%(FullPath)"
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(Filename)_wrap.cxx;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename)_wrap.cxx;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CacheGenSearch.cd" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0A90775A-78A3-4459-AC42-BE6C2257EEFF}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>SCM</RootNamespace>
+    <ProjectName>SCM</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <CLRSupport>false</CLRSupport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <CLRSupport>false</CLRSupport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -108,22 +142,65 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>C:\Program Files %28x86%29\Microsoft Visual Studio 11.0\VC\include\SDL;C:\Program Files %28x86%29\Microsoft Visual Studio 11.0\VC\include\freetype;$(IncludePath)</IncludePath>
+    <OutDir>.\Debug</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>C:\Program Files %28x86%29\Microsoft Visual Studio 11.0\VC\include\SDL;C:\Program Files %28x86%29\Microsoft Visual Studio 11.0\VC\include\freetype;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>C:\Program Files %28x86%29\Microsoft Visual Studio 11.0\VC\include\SDL;C:\Program Files %28x86%29\Microsoft Visual Studio 11.0\VC\include\freetype;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>C:\Program Files %28x86%29\Microsoft Visual Studio 11.0\VC\include\SDL;C:\Program Files %28x86%29\Microsoft Visual Studio 11.0\VC\include\freetype;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_WINDOWS;_USRDLL;SCM_EXPORTS;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files %28x86%29\Microsoft Visual Studio 11.0\VC\include\freetype2;C:\Program Files %28x86%29\Microsoft Visual Studio 11.0\VC\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>freeglut.lib;glew32s.lib;libtiff.lib;jpeg.lib;libpng16.lib;zlib.lib;mxml1.lib;ode.lib;freetype.lib;SDL2.lib;SDL2main.lib;opengl32.lib;ws2_32.lib;version.lib;winmm.lib;comctl32.lib;imm32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_WINDOWS;_USRDLL;SCM_EXPORTS;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files %28x86%29\Microsoft Visual Studio 11.0\VC\include\freetype2;C:\Program Files %28x86%29\Microsoft Visual Studio 11.0\VC\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>freeglut.lib;glew32s.lib;libtiff.lib;jpeg.lib;libpng16.lib;zlib.lib;mxml1.lib;ode.lib;freetype.lib;SDL2.lib;SDL2main.lib;opengl32.lib;ws2_32.lib;version.lib;winmm.lib;comctl32.lib;imm32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -131,16 +208,42 @@
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files %28x86%29\Microsoft Visual Studio 11.0\VC\include\libjpeg;C:\Program Files %28x86%29\Microsoft Visual Studio 11.0\VC\include\libtiff;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>freeglut.lib;glew32.lib;freetype.lib;SDL2.lib;SDL2main.lib;libpng.lib;libtiff.lib;jpeg.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ImageHasSafeExceptionHandlers />
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>Disabled</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files %28x86%29\Microsoft Visual Studio 11.0\VC\include\libjpeg;C:\Program Files %28x86%29\Microsoft Visual Studio 11.0\VC\include\libtiff;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>freeglut.lib;glew32.lib;freetype.lib;SDL2.lib;SDL2main.lib;libpng.lib;libtiff.lib;jpeg.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ImageHasSafeExceptionHandlers>
+      </ImageHasSafeExceptionHandlers>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

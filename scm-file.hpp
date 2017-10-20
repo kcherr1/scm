@@ -26,7 +26,6 @@
 #include "scm-sample.hpp"
 
 //------------------------------------------------------------------------------
-
 typedef std::vector<SDL_Thread *>           thread_v;
 typedef std::vector<SDL_Thread *>::iterator thread_i;
 
@@ -35,79 +34,80 @@ typedef std::vector<SDL_Thread *>::iterator thread_i;
 class scm_file
 {
 public:
+  scm_file(const std::string& name);
 
-    scm_file(const std::string& name);
+  virtual ~scm_file();
 
-    virtual ~scm_file();
+  void    activate(scm_cache *);
+  void  deactivate();
+  bool is_active() const { return active.get(); }
 
-    void    activate(scm_cache *);
-    void  deactivate();
-    bool is_active() const { return active.get(); }
+  bool           add_need(scm_task&);
 
-    bool           add_need(scm_task&);
+  virtual bool   get_page_status(uint64)                 const;
+  virtual uint64 get_page_offset(uint64)                 const;
+  virtual void   get_page_bounds(uint64, float&, float&) const;
+  virtual float  get_page_sample(const double *);
+          float* get_page_sample4v(const double *);
 
-    virtual bool   get_page_status(uint64)                 const;
-    virtual uint64 get_page_offset(uint64)                 const;
-    virtual void   get_page_bounds(uint64, float&, float&) const;
-    virtual float  get_page_sample(const double *);
+  virtual uint32 get_w()    const { return w; }
+  virtual uint32 get_h()    const { return h; }
+  virtual uint16 get_c()    const { return c; }
+  virtual uint16 get_b()    const { return b; }
 
-    virtual uint32 get_w()    const { return w; }
-    virtual uint32 get_h()    const { return h; }
-    virtual uint16 get_c()    const { return c; }
-    virtual uint16 get_b()    const { return b; }
+  const char    *get_path() const { return path.c_str(); }
+  const char    *get_name() const { return name.c_str(); }
 
-    const char    *get_path() const { return path.c_str(); }
-    const char    *get_name() const { return name.c_str(); }
-
-    uint64        find_page(long long, double&, double&) const;
+  uint64        find_page(long long a, double& y, double& x) const;
 
 protected:
 
-    std::string path;
-    std::string name;
+  std::string path;
+  std::string name;
 
 private:
 
-    // IO handling and threading data
+  // IO handling and threading data
 
-    scm_cache          *cache;
-    scm_queue<scm_task> needs;
-    scm_guard<bool>     active;
-    scm_sample         *sampler;
-    thread_v            threads;
+  scm_cache          *cache;
+  scm_queue<scm_task> needs;
+  scm_guard<bool>     active;
+  scm_sample         *sampler;
+  thread_v            threads;
 
-    // Image parameters
+  // Image parameters
 
-    uint32   w;         // Page width
-    uint32   h;         // Page height
-    uint16   c;         // Sample count
-    uint16   b;         // Sample depth
+  uint32   w;         // Page width
+  uint32   h;         // Page height
+  uint16   c;         // Sample count
+  uint16   b;         // Sample depth
 
-    uint64 *xv;         // Page indices
-    uint64  xc;
+  uint64 *xv;         // Page indices
+  uint64  xc;
 
-    uint64 *ov;         // Page offsets
-    uint64  oc;
+  uint64 *ov;         // Page offsets
+  uint64  oc;
 
-    void   *av;         // Page minima
-    uint64  ac;
+  void   *av;         // Page minima
+  uint64  ac;
 
-    void   *zv;         // Page maxima
-    uint64  zc;
+  void   *zv;         // Page maxima
+  uint64  zc;
 
-    float  tofloat(const void *, uint64)        const;
-    void fromfloat(const void *, uint64, float) const;
+  float  tofloat(const void *, uint64)        const;
+  void fromfloat(const void *, uint64, float) const;
 
-    uint64 toindex(uint64) const;
+  uint64 toindex(uint64) const;
 
-    friend int loader(void *);
+  friend int loader(void *);
 };
 
 //------------------------------------------------------------------------------
 
 bool scm_load_page(const char *, long long,
-                         TIFF *, uint64, int, int, int, int, void *);
+  TIFF *, uint64, int, int, int, int, void *);
 
+void toggle_show_indices();
 //------------------------------------------------------------------------------
 
 #endif

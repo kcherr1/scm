@@ -23,12 +23,12 @@
 #endif
 
 #include "util3d/math3d.h"
-#include "util3d/glsl.h"
+#include "util3d/glsl.hpp"
 
 #include "scm-sphere.hpp"
 #include "scm-index.hpp"
 #include "scm-log.hpp"
-
+#include "scm-transfb.hpp"
 //------------------------------------------------------------------------------
 
 #if 1
@@ -42,9 +42,9 @@ typedef GLuint           GLindex;
 //------------------------------------------------------------------------------
 
 static inline void mid4(double *v, const double *a,
-                                   const double *b,
-                                   const double *c,
-                                   const double *d)
+    const double *b,
+    const double *c,
+    const double *d)
 {
     v[0] = a[0] + b[0] + c[0] + d[0];
     v[1] = a[1] + b[1] + c[1] + d[1];
@@ -75,7 +75,7 @@ void scm_sphere::zoom(double *w, const double *v)
         vnormalize(x, x);
 
         vmul(w, zoomv, cos(b));
-        vmad(w, w,  x, sin(b));
+        vmad(w, w, x, sin(b));
     }
     else vcpy(w, v);
 }
@@ -86,10 +86,12 @@ scm_sphere::scm_sphere(int d, int l) : detail(d), limit(l)
 {
     init_arrays(d);
 
-    zoomv[0] =  0;
-    zoomv[1] =  0;
+    zoomv[0] = 0;
+    zoomv[1] = 0;
     zoomv[2] = -1;
-    zoomk    =  1;
+    zoomk = 1;
+
+    transfb = new scm_transfb();
 }
 
 scm_sphere::~scm_sphere()
@@ -103,7 +105,7 @@ void scm_sphere::set_detail(int d)
 {
     if (0 < d && d < 256)
     {
-        free_arrays( );
+        free_arrays();
         detail = d;
         init_arrays(d);
     }
@@ -113,6 +115,11 @@ void scm_sphere::set_limit(int l)
 {
     if (0 < l)
         limit = l;
+}
+
+void scm_sphere::set_num_fb_verts(unsigned long long numverts)
+{
+    transfb->set_num_verts(numverts);
 }
 
 //------------------------------------------------------------------------------
@@ -138,7 +145,7 @@ static inline double length(const double *a, const double *b, int w, int h)
 }
 
 double scm_sphere::view_page(const double *M, int vw, int vh,
-                             double r0, double r1, long long i, bool zoomb)
+    double r0, double r1, long long i, bool zoomb)
 {
     double v[12];
 
@@ -179,7 +186,7 @@ double scm_sphere::view_page(const double *M, int vw, int vh,
 
     double u[3];
 
-    u[0] = v[0] + v[3] + v[6] + v[ 9];
+    u[0] = v[0] + v[3] + v[6] + v[9];
     u[1] = v[1] + v[4] + v[7] + v[10];
     u[2] = v[2] + v[5] + v[8] + v[11];
 
@@ -204,14 +211,14 @@ double scm_sphere::view_page(const double *M, int vw, int vh,
 
     // Compute W and reject any volume on the far side of the singularity.
 
-    A[3] = M[ 3] * a[0] + M[ 7] * a[1] + M[11] * a[2] + M[15];
-    B[3] = M[ 3] * b[0] + M[ 7] * b[1] + M[11] * b[2] + M[15];
-    C[3] = M[ 3] * c[0] + M[ 7] * c[1] + M[11] * c[2] + M[15];
-    D[3] = M[ 3] * d[0] + M[ 7] * d[1] + M[11] * d[2] + M[15];
-    E[3] = M[ 3] * e[0] + M[ 7] * e[1] + M[11] * e[2] + M[15];
-    F[3] = M[ 3] * f[0] + M[ 7] * f[1] + M[11] * f[2] + M[15];
-    G[3] = M[ 3] * g[0] + M[ 7] * g[1] + M[11] * g[2] + M[15];
-    H[3] = M[ 3] * h[0] + M[ 7] * h[1] + M[11] * h[2] + M[15];
+    A[3] = M[3] * a[0] + M[7] * a[1] + M[11] * a[2] + M[15];
+    B[3] = M[3] * b[0] + M[7] * b[1] + M[11] * b[2] + M[15];
+    C[3] = M[3] * c[0] + M[7] * c[1] + M[11] * c[2] + M[15];
+    D[3] = M[3] * d[0] + M[7] * d[1] + M[11] * d[2] + M[15];
+    E[3] = M[3] * e[0] + M[7] * e[1] + M[11] * e[2] + M[15];
+    F[3] = M[3] * f[0] + M[7] * f[1] + M[11] * f[2] + M[15];
+    G[3] = M[3] * g[0] + M[7] * g[1] + M[11] * g[2] + M[15];
+    H[3] = M[3] * h[0] + M[7] * h[1] + M[11] * h[2] + M[15];
 
     if (A[3] <= 0 && B[3] <= 0 && C[3] <= 0 && D[3] <= 0 &&
         E[3] <= 0 && F[3] <= 0 && G[3] <= 0 && H[3] <= 0)
@@ -219,17 +226,17 @@ double scm_sphere::view_page(const double *M, int vw, int vh,
 
     // Compute Z and reject using the near and far clipping planes.
 
-    A[2] = M[ 2] * a[0] + M[ 6] * a[1] + M[10] * a[2] + M[14];
-    B[2] = M[ 2] * b[0] + M[ 6] * b[1] + M[10] * b[2] + M[14];
-    C[2] = M[ 2] * c[0] + M[ 6] * c[1] + M[10] * c[2] + M[14];
-    D[2] = M[ 2] * d[0] + M[ 6] * d[1] + M[10] * d[2] + M[14];
-    E[2] = M[ 2] * e[0] + M[ 6] * e[1] + M[10] * e[2] + M[14];
-    F[2] = M[ 2] * f[0] + M[ 6] * f[1] + M[10] * f[2] + M[14];
-    G[2] = M[ 2] * g[0] + M[ 6] * g[1] + M[10] * g[2] + M[14];
-    H[2] = M[ 2] * h[0] + M[ 6] * h[1] + M[10] * h[2] + M[14];
+    A[2] = M[2] * a[0] + M[6] * a[1] + M[10] * a[2] + M[14];
+    B[2] = M[2] * b[0] + M[6] * b[1] + M[10] * b[2] + M[14];
+    C[2] = M[2] * c[0] + M[6] * c[1] + M[10] * c[2] + M[14];
+    D[2] = M[2] * d[0] + M[6] * d[1] + M[10] * d[2] + M[14];
+    E[2] = M[2] * e[0] + M[6] * e[1] + M[10] * e[2] + M[14];
+    F[2] = M[2] * f[0] + M[6] * f[1] + M[10] * f[2] + M[14];
+    G[2] = M[2] * g[0] + M[6] * g[1] + M[10] * g[2] + M[14];
+    H[2] = M[2] * h[0] + M[6] * h[1] + M[10] * h[2] + M[14];
 
-    if (A[2] >  A[3] && B[2] >  B[3] && C[2] >  C[3] && D[2] >  D[3] &&
-        E[2] >  E[3] && F[2] >  F[3] && G[2] >  G[3] && H[2] >  H[3])
+    if (A[2] > A[3] && B[2] > B[3] && C[2] > C[3] && D[2] > D[3] &&
+        E[2] > E[3] && F[2] > F[3] && G[2] > G[3] && H[2] > H[3])
         return 0;
     if (A[2] < -A[3] && B[2] < -B[3] && C[2] < -C[3] && D[2] < -D[3] &&
         E[2] < -E[3] && F[2] < -F[3] && G[2] < -G[3] && H[2] < -H[3])
@@ -237,17 +244,17 @@ double scm_sphere::view_page(const double *M, int vw, int vh,
 
     // Compute Y and reject using the bottom and top clipping planes.
 
-    A[1] = M[ 1] * a[0] + M[ 5] * a[1] + M[ 9] * a[2] + M[13];
-    B[1] = M[ 1] * b[0] + M[ 5] * b[1] + M[ 9] * b[2] + M[13];
-    C[1] = M[ 1] * c[0] + M[ 5] * c[1] + M[ 9] * c[2] + M[13];
-    D[1] = M[ 1] * d[0] + M[ 5] * d[1] + M[ 9] * d[2] + M[13];
-    E[1] = M[ 1] * e[0] + M[ 5] * e[1] + M[ 9] * e[2] + M[13];
-    F[1] = M[ 1] * f[0] + M[ 5] * f[1] + M[ 9] * f[2] + M[13];
-    G[1] = M[ 1] * g[0] + M[ 5] * g[1] + M[ 9] * g[2] + M[13];
-    H[1] = M[ 1] * h[0] + M[ 5] * h[1] + M[ 9] * h[2] + M[13];
+    A[1] = M[1] * a[0] + M[5] * a[1] + M[9] * a[2] + M[13];
+    B[1] = M[1] * b[0] + M[5] * b[1] + M[9] * b[2] + M[13];
+    C[1] = M[1] * c[0] + M[5] * c[1] + M[9] * c[2] + M[13];
+    D[1] = M[1] * d[0] + M[5] * d[1] + M[9] * d[2] + M[13];
+    E[1] = M[1] * e[0] + M[5] * e[1] + M[9] * e[2] + M[13];
+    F[1] = M[1] * f[0] + M[5] * f[1] + M[9] * f[2] + M[13];
+    G[1] = M[1] * g[0] + M[5] * g[1] + M[9] * g[2] + M[13];
+    H[1] = M[1] * h[0] + M[5] * h[1] + M[9] * h[2] + M[13];
 
-    if (A[1] >  A[3] && B[1] >  B[3] && C[1] >  C[3] && D[1] >  D[3] &&
-        E[1] >  E[3] && F[1] >  F[3] && G[1] >  G[3] && H[1] >  H[3])
+    if (A[1] > A[3] && B[1] > B[3] && C[1] > C[3] && D[1] > D[3] &&
+        E[1] > E[3] && F[1] > F[3] && G[1] > G[3] && H[1] > H[3])
         return 0;
     if (A[1] < -A[3] && B[1] < -B[3] && C[1] < -C[3] && D[1] < -D[3] &&
         E[1] < -E[3] && F[1] < -F[3] && G[1] < -G[3] && H[1] < -H[3])
@@ -255,17 +262,17 @@ double scm_sphere::view_page(const double *M, int vw, int vh,
 
     // Compute X and reject using the left and right clipping planes.
 
-    A[0] = M[ 0] * a[0] + M[ 4] * a[1] + M[ 8] * a[2] + M[12];
-    B[0] = M[ 0] * b[0] + M[ 4] * b[1] + M[ 8] * b[2] + M[12];
-    C[0] = M[ 0] * c[0] + M[ 4] * c[1] + M[ 8] * c[2] + M[12];
-    D[0] = M[ 0] * d[0] + M[ 4] * d[1] + M[ 8] * d[2] + M[12];
-    E[0] = M[ 0] * e[0] + M[ 4] * e[1] + M[ 8] * e[2] + M[12];
-    F[0] = M[ 0] * f[0] + M[ 4] * f[1] + M[ 8] * f[2] + M[12];
-    G[0] = M[ 0] * g[0] + M[ 4] * g[1] + M[ 8] * g[2] + M[12];
-    H[0] = M[ 0] * h[0] + M[ 4] * h[1] + M[ 8] * h[2] + M[12];
+    A[0] = M[0] * a[0] + M[4] * a[1] + M[8] * a[2] + M[12];
+    B[0] = M[0] * b[0] + M[4] * b[1] + M[8] * b[2] + M[12];
+    C[0] = M[0] * c[0] + M[4] * c[1] + M[8] * c[2] + M[12];
+    D[0] = M[0] * d[0] + M[4] * d[1] + M[8] * d[2] + M[12];
+    E[0] = M[0] * e[0] + M[4] * e[1] + M[8] * e[2] + M[12];
+    F[0] = M[0] * f[0] + M[4] * f[1] + M[8] * f[2] + M[12];
+    G[0] = M[0] * g[0] + M[4] * g[1] + M[8] * g[2] + M[12];
+    H[0] = M[0] * h[0] + M[4] * h[1] + M[8] * h[2] + M[12];
 
-    if (A[0] >  A[3] && B[0] >  B[3] && C[0] >  C[3] && D[0] >  D[3] &&
-        E[0] >  E[3] && F[0] >  F[3] && G[0] >  G[3] && H[0] >  H[3])
+    if (A[0] > A[3] && B[0] > B[3] && C[0] > C[3] && D[0] > D[3] &&
+        E[0] > E[3] && F[0] > F[3] && G[0] > G[3] && H[0] > H[3])
         return 0;
     if (A[0] < -A[3] && B[0] < -B[3] && C[0] < -C[3] && D[0] < -D[3] &&
         E[0] < -E[3] && F[0] < -F[3] && G[0] < -G[3] && H[0] < -H[3])
@@ -274,9 +281,9 @@ double scm_sphere::view_page(const double *M, int vw, int vh,
     // Compute the length of the longest visible edge, in pixels.
 
     return std::max(std::max(length(A, B, vw, vh),
-                             length(C, D, vw, vh)),
-                    std::max(length(A, C, vw, vh),
-                             length(B, D, vw, vh)));
+        length(C, D, vw, vh)),
+        std::max(length(A, C, vw, vh),
+            length(B, D, vw, vh)));
 }
 
 //------------------------------------------------------------------------------
@@ -286,10 +293,10 @@ double scm_sphere::view_page(const double *M, int vw, int vh,
 // adjacent pages differ by more than one level of detail.
 
 void scm_sphere::add_page(const double *M,
-                                   int width,
-                                   int height,
-                                double r0,
-                                double r1, long long i, bool zoom)
+    int width,
+    int height,
+    double r0,
+    double r1, long long i, bool zoom)
 {
     if (!is_set(i))
     {
@@ -307,30 +314,30 @@ void scm_sphere::add_page(const double *M,
 
                 switch (scm_page_order(i))
                 {
-                    case 0:
-                        add_page(M, width, height, r0, r1, scm_page_north(p), zoom);
-                        add_page(M, width, height, r0, r1, scm_page_south(i), zoom);
-                        add_page(M, width, height, r0, r1, scm_page_east (i), zoom);
-                        add_page(M, width, height, r0, r1, scm_page_west (p), zoom);
-                        break;
-                    case 1:
-                        add_page(M, width, height, r0, r1, scm_page_north(p), zoom);
-                        add_page(M, width, height, r0, r1, scm_page_south(i), zoom);
-                        add_page(M, width, height, r0, r1, scm_page_east (p), zoom);
-                        add_page(M, width, height, r0, r1, scm_page_west (i), zoom);
-                        break;
-                    case 2:
-                        add_page(M, width, height, r0, r1, scm_page_north(i), zoom);
-                        add_page(M, width, height, r0, r1, scm_page_south(p), zoom);
-                        add_page(M, width, height, r0, r1, scm_page_east (i), zoom);
-                        add_page(M, width, height, r0, r1, scm_page_west (p), zoom);
-                        break;
-                    case 3:
-                        add_page(M, width, height, r0, r1, scm_page_north(i), zoom);
-                        add_page(M, width, height, r0, r1, scm_page_south(p), zoom);
-                        add_page(M, width, height, r0, r1, scm_page_east (p), zoom);
-                        add_page(M, width, height, r0, r1, scm_page_west (i), zoom);
-                        break;
+                case 0:
+                    add_page(M, width, height, r0, r1, scm_page_north(p), zoom);
+                    add_page(M, width, height, r0, r1, scm_page_south(i), zoom);
+                    add_page(M, width, height, r0, r1, scm_page_east(i), zoom);
+                    add_page(M, width, height, r0, r1, scm_page_west(p), zoom);
+                    break;
+                case 1:
+                    add_page(M, width, height, r0, r1, scm_page_north(p), zoom);
+                    add_page(M, width, height, r0, r1, scm_page_south(i), zoom);
+                    add_page(M, width, height, r0, r1, scm_page_east(p), zoom);
+                    add_page(M, width, height, r0, r1, scm_page_west(i), zoom);
+                    break;
+                case 2:
+                    add_page(M, width, height, r0, r1, scm_page_north(i), zoom);
+                    add_page(M, width, height, r0, r1, scm_page_south(p), zoom);
+                    add_page(M, width, height, r0, r1, scm_page_east(i), zoom);
+                    add_page(M, width, height, r0, r1, scm_page_west(p), zoom);
+                    break;
+                case 3:
+                    add_page(M, width, height, r0, r1, scm_page_north(i), zoom);
+                    add_page(M, width, height, r0, r1, scm_page_south(p), zoom);
+                    add_page(M, width, height, r0, r1, scm_page_east(p), zoom);
+                    add_page(M, width, height, r0, r1, scm_page_west(i), zoom);
+                    break;
                 }
             }
         }
@@ -338,10 +345,10 @@ void scm_sphere::add_page(const double *M,
 }
 
 bool scm_sphere::prep_page(scm_scene *scene,
-                        const double *M,
-                                  int width,
-                                  int height,
-                                  int channel, long long i, bool zoom)
+    const double *M,
+    int width,
+    int height,
+    int channel, long long i, bool zoom)
 {
     float t0;
     float t1;
@@ -386,8 +393,17 @@ bool scm_sphere::prep_page(scm_scene *scene,
     return false;
 }
 
-void scm_sphere::draw_page(scm_scene *scene,
-                           int channel, int depth, int frame, long long i)
+void scm_sphere::capture_next_frame()
+{
+    transfb->capture_frame();
+}
+
+int scm_sphere::ready_to_capture()
+{
+    return transfb->will_capture_frame();
+}
+
+void scm_sphere::draw_page(scm_scene *scene, int channel, int depth, int frame, long long i)
 {
     scene->bind_page(channel, depth, frame, i);
     {
@@ -434,13 +450,34 @@ void scm_sphere::draw_page(scm_scene *scene,
 
             // Select a mesh that matches up with the neighbors. Draw it.
 
-            int j = (i < 6) ? 0 : (is_set(scm_page_north(i)) ? 0 : 1)
-                                | (is_set(scm_page_south(i)) ? 0 : 2)
-                                | (is_set(scm_page_west (i)) ? 0 : 4)
-                                | (is_set(scm_page_east (i)) ? 0 : 8);
+            int j = (i < 6) ? 0
+                : (is_set(scm_page_north(i)) ? 0 : 1)
+                | (is_set(scm_page_south(i)) ? 0 : 2)
+                | (is_set(scm_page_west(i)) ? 0 : 4)
+                | (is_set(scm_page_east(i)) ? 0 : 8);
 
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elements[j]);
-            glDrawElements(GL_QUADS, count, GL_ELEMENT_INDEX, 0);
+            // give shader the depth
+
+            static GLint udepthLoc = -1;
+            if (udepthLoc == -1)
+            {
+                udepthLoc = glGetUniformLocation(scene->get_program(), "depth");
+            }
+            glUniform1i(udepthLoc, (GLint)depth);
+
+            // render
+
+            if (transfb->state != TFB_COUNT)
+            {
+                transfb->resume();
+                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elements[j]);
+                glDrawElements(GL_QUADS, count, GL_ELEMENT_INDEX, 0);
+                transfb->pause();
+            }
+            else
+            {
+                transfb->add_to_count(count);
+            }
         }
     }
     scene->unbind_page(channel, depth);
@@ -449,7 +486,7 @@ void scm_sphere::draw_page(scm_scene *scene,
 //------------------------------------------------------------------------------
 
 void scm_sphere::prep(scm_scene *scene, const double *M,
-                      int width, int height, int channel, bool zoom)
+    int width, int height, int channel, bool zoom)
 {
     pages.clear();
 
@@ -462,7 +499,7 @@ void scm_sphere::prep(scm_scene *scene, const double *M,
 }
 
 void scm_sphere::draw(scm_scene *scene, const double *M,
-                     int width, int height, int channel, int frame)
+    int width, int height, int channel, int frame)
 {
     glEnable(GL_COLOR_MATERIAL);
 
@@ -488,18 +525,16 @@ void scm_sphere::draw(scm_scene *scene, const double *M,
     scene->bind(channel);
     {
         static const GLfloat M[6][9] = {
-            {  0.f,  0.f,  1.f,  0.f,  1.f,  0.f, -1.f,  0.f,  0.f },
-            {  0.f,  0.f, -1.f,  0.f,  1.f,  0.f,  1.f,  0.f,  0.f },
-            {  1.f,  0.f,  0.f,  0.f,  0.f,  1.f,  0.f, -1.f,  0.f },
-            {  1.f,  0.f,  0.f,  0.f,  0.f, -1.f,  0.f,  1.f,  0.f },
-            {  1.f,  0.f,  0.f,  0.f,  1.f,  0.f,  0.f,  0.f,  1.f },
-            { -1.f,  0.f,  0.f,  0.f,  1.f,  0.f,  0.f,  0.f, -1.f },
+            { 0.f, 0.f, 1.f, 0.f, 1.f, 0.f, -1.f, 0.f, 0.f },
+            { 0.f, 0.f, -1.f, 0.f, 1.f, 0.f, 1.f, 0.f, 0.f },
+            { 1.f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f, -1.f, 0.f },
+            { 1.f, 0.f, 0.f, 0.f, 0.f, -1.f, 0.f, 1.f, 0.f },
+            { 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f },
+            { -1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, -1.f },
         };
 
         glUniform1f(scene->uzoomk, GLfloat(zoomk));
-        glUniform3f(scene->uzoomv, GLfloat(zoomv[0]),
-                                   GLfloat(zoomv[1]),
-                                   GLfloat(zoomv[2]));
+        glUniform3f(scene->uzoomv, GLfloat(zoomv[0]), GLfloat(zoomv[1]), GLfloat(zoomv[2]));
 
         if (is_set(0))
         {
@@ -537,7 +572,7 @@ void scm_sphere::draw(scm_scene *scene, const double *M,
     // Revert the local GL state.
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ARRAY_BUFFER,         0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
     glDisableClientState(GL_VERTEX_ARRAY);
 }
 
@@ -551,15 +586,15 @@ static void init_vertices(int n)
         GLfloat y;
     };
 
-    const size_t s = (n + 1) * (n + 1) * sizeof (vertex);
+    const size_t s = (n + 1) * (n + 1) * sizeof(vertex);
 
-    if (vertex *p = (vertex *) malloc(s))
+    if (vertex *p = (vertex *)malloc(s))
     {
         vertex *v = p;
 
         // Compute the position of each vertex.
 
-        for     (int r = 0; r <= n; ++r)
+        for (int r = 0; r <= n; ++r)
             for (int c = 0; c <= n; ++c, ++v)
             {
                 v->x = GLfloat(c) / GLfloat(n);
@@ -573,6 +608,8 @@ static void init_vertices(int n)
     }
 }
 
+// rewrite to add adj info into ebo's.
+// 16 = 4 possible edgs with 2 choices (same res or lower) so 2 ^ 4 ebo's
 static void init_elements(int n, int b)
 {
     struct element
@@ -583,21 +620,21 @@ static void init_elements(int n, int b)
         GLindex c;
     };
 
-    const size_t s = n * n * sizeof (element);
+    const size_t s = n * n * sizeof(element);
     const int    d = n + 1;
 
-    if (element *p = (element *) malloc(s))
+    if (element *p = (element *)malloc(s))
     {
         element *e = p;
 
         // Compute the indices for each quad.
 
-        for     (int r = 0; r < n; ++r)
+        for (int r = 0; r < n; ++r)
             for (int c = 0; c < n; ++c, ++e)
             {
-                e->a = GLindex(d * (r    ) + (c    ));
-                e->b = GLindex(d * (r    ) + (c + 1));
-                e->c = GLindex(d * (r + 1) + (c    ));
+                e->a = GLindex(d * (r)+(c));
+                e->b = GLindex(d * (r)+(c + 1));
+                e->c = GLindex(d * (r + 1) + (c));
                 e->d = GLindex(d * (r + 1) + (c + 1));
             }
 

@@ -16,6 +16,11 @@
 #include <limits>
 #include <cmath>
 #include <direct.h>
+
+#include <exception>
+#include <iostream>
+#include <fstream>
+
 #include "util3d/math3d.h"
 
 #include "scm-step.hpp"
@@ -27,13 +32,16 @@
 #include "scm-log.hpp"
 
 //------------------------------------------------------------------------------
+static void write_file(const char *file, const char *msg);
 
-scm_system::scm_system(int w, int h, int d, int l) :
-    serial(1), frame(0), sync(false), fade(0)
+scm_system::scm_system(int w, int h, int d, int l) : serial(1), frame(0), sync(false), fade(0)
 {
+
     scm_log("scm_system working directory is %s", getcwd(0, 0));
 
-    mutex  = SDL_CreateMutex();
+    mutex = SDL_CreateMutex();
+
+    glewInit();
     render = new scm_render(w, h);
     sphere = new scm_sphere(d, l);
     fore0 = 0;
@@ -44,22 +52,20 @@ scm_system::scm_system(int w, int h, int d, int l) :
 
 scm_system::~scm_system()
 {
-    while (get_scene_count())
-        del_scene(0);
+    //while (get_scene_count())
+    //  del_scene(0);
 
-    delete sphere;
-    delete render;
+    //delete sphere;
+    //delete render;
 
     SDL_DestroyMutex(mutex);
 }
 
 //------------------------------------------------------------------------------
 
-void scm_system::render_sphere(const double *P,
-                               const double *M, int channel) const
+void scm_system::render_sphere(const double *P, const double *M, int channel) const
 {
-    render->render(sphere, fore0, fore1,
-                           back0, back1, P, M, channel, frame, fade);
+    render->render(sphere, fore0, fore1, back0, back1, P, M, channel, frame, fade);
 }
 
 //------------------------------------------------------------------------------
@@ -163,13 +169,13 @@ void scm_system::export_queue(std::string& data)
         equaternion(r, q);
 
         file << std::setprecision(std::numeric_limits<long double>::digits10)
-             << p[0] << " "
-             << p[1] << " "
-             << p[2] << " "
-             << degrees(r[0]) << " "
-             << degrees(r[1]) << " "
-             << degrees(r[2]) << " "
-             << "0.0 0.0 0.0" << std::endl;
+            << p[0] << " "
+            << p[1] << " "
+            << p[2] << " "
+            << degrees(r[0]) << " "
+            << degrees(r[1]) << " "
+            << degrees(r[2]) << " "
+            << "0.0 0.0 0.0" << std::endl;
     }
     data = file.str();
 }
@@ -238,7 +244,7 @@ int scm_system::add_scene(int i)
     if (scm_scene *scene = new scm_scene(this))
     {
         scm_scene_i it = scenes.insert(scenes.begin() + std::max(i, 0), scene);
-        j         = it - scenes.begin();
+        j = it - scenes.begin();
 
         if (fore0 == 0) fore0 = scene;
         if (fore1 == 0) fore1 = scene;
@@ -284,7 +290,7 @@ int scm_system::add_step(int i)
     if (scm_step *step = new scm_step())
     {
         scm_step_i it = steps.insert(steps.begin() + std::max(i, 0), step);
-        j        = it - steps.begin();
+        j = it - steps.begin();
     }
     scm_log("scm_system add_step %d = %d", i, j);
 
@@ -326,15 +332,15 @@ scm_step scm_system::get_step_blend(double t) const
 
     if (queue.size() == 0) return scm_step();
     if (queue.size() == 1) return *queue[0];
-    if (t            == 0) return *queue[0];
-    if (k            == 0) return *queue[i];
+    if (t == 0) return *queue[0];
+    if (k == 0) return *queue[i];
 
     int n = queue.size() - 2;
     int m = queue.size() - 1;
 
     scm_step a = (i > 0) ? *queue[i - 1] : scm_step(queue[0], queue[1], -1.0);
-    scm_step b =           *queue[i    ];
-    scm_step c =           *queue[i + 1];
+    scm_step b = *queue[i];
+    scm_step c = *queue[i + 1];
     scm_step d = (i < n) ? *queue[i + 2] : scm_step(queue[n], queue[m], +2.0);
 
     return scm_step(&a, &b, &c, &d, k);
@@ -362,7 +368,7 @@ double scm_system::set_scene_blend(double t)
         t = std::min(t, double(queue.size() - 1));
 
         scm_step *step0 = queue[int(floor(t))];
-        scm_step *step1 = queue[int( ceil(t))];
+        scm_step *step1 = queue[int(ceil(t))];
 
 #if 1
         fore0 = find_scene(step0->get_foreground());
@@ -394,7 +400,7 @@ float scm_system::get_current_ground(const double *v) const
 {
     if (fore0 && fore1)
         return std::max(fore0->get_current_ground(v),
-                        fore1->get_current_ground(v));
+            fore1->get_current_ground(v));
     if (fore0)
         return fore0->get_current_ground(v);
     if (fore1)
@@ -408,7 +414,7 @@ float scm_system::get_minimum_ground() const
 {
     if (fore0 && fore1)
         return std::min(fore0->get_minimum_ground(),
-                        fore1->get_minimum_ground());
+            fore1->get_minimum_ground());
     if (fore0)
         return fore0->get_minimum_ground();
     if (fore1)
@@ -434,9 +440,9 @@ int scm_system::acquire_scm(const std::string& name)
         {
             int index = serial++;
 
-            files[name].file  = file;
+            files[name].file = file;
             files[name].index = index;
-            files[name].uses  = 1;
+            files[name].uses = 1;
 
             // Make sure we have a compatible cache.
 
@@ -447,7 +453,7 @@ int scm_system::acquire_scm(const std::string& name)
             else
             {
                 caches[cp].cache = new scm_cache(this, cp.n, cp.c, cp.b);
-                caches[cp].uses  = 1;
+                caches[cp].uses = 1;
             }
 
             // Associate the index, file, and cache in the reverse look-up.
@@ -542,6 +548,19 @@ float scm_system::get_page_sample(int f, const double *v)
         return file->get_page_sample(v);
     else
         return 1.f;
+}
+
+float* scm_system::get_page_sample4v(int f, const double *v)
+{
+    if (scm_file *file = get_file(f))
+        return file->get_page_sample4v(v);
+    else
+    {
+        float* result = (float*)calloc(4, sizeof(float));
+        for (int i = 0; i < 4; i++)
+            result[i] = 1.f;
+        return result;
+    }
 }
 
 void scm_system::get_page_bounds(int f, long long i, float& r0, float& r1)

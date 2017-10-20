@@ -16,7 +16,7 @@
 #include <vector>
 #include <string>
 
-#include "util3d/glsl.h"
+#include "util3d/glsl.hpp"
 
 //------------------------------------------------------------------------------
 
@@ -45,7 +45,7 @@ public:
     const std::string& get_vert () const { return  vert_file; }
     const std::string& get_frag () const { return  frag_file; }
 
-    void               set_color(GLuint c)             { color = c; }
+    void               set_color(unsigned int c)       { color = (GLuint)c; }
     void               set_name (const std::string &s) { name  = s; }
     void               set_label(const std::string &s);
     void               set_vert (const std::string &s);
@@ -73,6 +73,8 @@ public:
 
     void    get_page_bounds(int, long long, float&, float &) const;
     bool    get_page_status(int, long long)                  const;
+
+    unsigned int get_program() const;
 
     GLint   uA[16];
     GLint   uB[16];

@@ -14,9 +14,12 @@
 #define SCM_LOG_HPP
 
 //------------------------------------------------------------------------------
-
+void scm_logopen(const char *);
 void scm_log(const char *, ...);
-
+void scm_clog(const char*, const char*, ...);
+void scm_clognoflush(const char*, const char*, ...);
+void scm_logflush();
+void scm_logclose();
 //------------------------------------------------------------------------------
 
 #endif

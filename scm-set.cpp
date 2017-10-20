@@ -64,7 +64,7 @@ scm_page scm_set::eject(int t, long long i)
     for (e = m.begin(); e != m.end(); ++e)
     {
         if (a == m.end() || e->second < a->second) a = e;
-                                                   l = e;
+        l = e;
     }
 
     // If the LRU page was not used in this scene or the last, eject it.

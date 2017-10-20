@@ -60,7 +60,8 @@ public:
     void unbind_page(GLuint, int)                 const;
     void  touch_page(             int, long long) const;
 
-    float   get_page_sample(const double *)              const;
+    float   get_page_sample  (const double *v)           const;
+    float*  get_page_sample4v(const double *v)           const;
     void    get_page_bounds(long long, float &, float &) const;
     bool    get_page_status(long long)                   const;
 

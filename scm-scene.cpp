@@ -21,7 +21,7 @@
 
 scm_scene::scm_scene(scm_system *sys) : sys(sys), label(0), color(0xFFBF00FF)
 {
-    memset(&render, 0, sizeof (glsl));
+    memset(&render, 0, sizeof(glsl));
 
     scm_log("scm_scene constructor");
 }
@@ -39,13 +39,18 @@ scm_scene::~scm_scene()
 
 //------------------------------------------------------------------------------
 
+unsigned int scm_scene::get_program() const
+{
+    return render.program;
+}
+
 void scm_scene::set_label(const std::string &s)
 {
     if (label)
         delete label;
 
     label_file = s;
-    label      = 0;
+    label = 0;
 }
 
 void scm_scene::set_vert(const std::string &s)
@@ -83,7 +88,7 @@ int scm_scene::add_image(int i)
     if (scm_image *image = new scm_image(sys))
     {
         scm_image_i it = images.insert(images.begin() + i, image);
-        j         = it - images.begin();
+        j = it - images.begin();
     }
     scm_log("scm_scene add_image %d = %d", i, j);
 
@@ -123,7 +128,7 @@ void scm_scene::init_uniforms()
             uA[d] = glsl_uniform(render.program, "A[%d]", d);
             uB[d] = glsl_uniform(render.program, "B[%d]", d);
         }
-        uM     = glsl_uniform(render.program, "M");
+        uM = glsl_uniform(render.program, "M");
         uzoomv = glsl_uniform(render.program, "zoomv");
         uzoomk = glsl_uniform(render.program, "zoomk");
     }
@@ -142,8 +147,8 @@ void scm_scene::draw_label()
         {
             GLubyte r = (color & 0xFF000000) >> 24;
             GLubyte g = (color & 0x00FF0000) >> 16;
-            GLubyte b = (color & 0x0000FF00) >>  8;
-            GLubyte a = (color & 0x000000FF) >>  0;
+            GLubyte b = (color & 0x0000FF00) >> 8;
+            GLubyte a = (color & 0x000000FF) >> 0;
 
             label->draw(r, g, b, a);
         }

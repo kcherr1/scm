@@ -51,8 +51,8 @@ void scm_task::make_page(int x, int y)
     {
         glUnmapBuffer(GL_PIXEL_UNPACK_BUFFER);
         glTexSubImage2D(GL_TEXTURE_2D, 0, x, y, n + 2, n + 2,
-                                     scm_external_form(c, b),
-                                     scm_external_type(c, b), 0);
+            scm_external_form(c, b),
+            scm_external_type(c, b), 0);
     }
     glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
 }
@@ -83,7 +83,7 @@ bool scm_task::load_page(const char *name, TIFF *T)
 
 GLenum scm_internal_form(uint16 c, uint16 b)
 {
-    if      (b == 32)
+    if (b == 32)
         switch (c)
         {
         case  1: return GL_LUMINANCE32F_ARB;
@@ -135,9 +135,9 @@ GLenum scm_external_form(uint16 c, uint16 b)
 
 GLenum scm_external_type(uint16 c, uint16 b)
 {
-    if      (b == 32) return GL_FLOAT;
+    if (b == 32) return GL_FLOAT;
     else if (b == 16) return GL_UNSIGNED_SHORT;
-    else if (c ==  4) return GL_UNSIGNED_INT_8_8_8_8_REV;
+    else if (c == 4) return GL_UNSIGNED_INT_8_8_8_8_REV;
     else              return GL_UNSIGNED_BYTE;
 }
 

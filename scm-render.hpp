@@ -15,7 +15,7 @@
 
 #include <GL/glew.h>
 
-#include "util3d/glsl.h"
+#include "util3d/glsl.hpp"
 
 //------------------------------------------------------------------------------
 

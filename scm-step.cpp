@@ -22,20 +22,20 @@
 //------------------------------------------------------------------------------
 
 static double hermite(double a, double b,
-                      double c, double d,
-                      double t, double tension, double bias)
+    double c, double d,
+    double t, double tension, double bias)
 {
     double e = (b - a) * (1.0 + bias) * (1.0 - tension) / 2.0
-             + (c - b) * (1.0 - bias) * (1.0 - tension) / 2.0;
+        + (c - b) * (1.0 - bias) * (1.0 - tension) / 2.0;
     double f = (c - b) * (1.0 + bias) * (1.0 - tension) / 2.0
-             + (d - c) * (1.0 - bias) * (1.0 - tension) / 2.0;
+        + (d - c) * (1.0 - bias) * (1.0 - tension) / 2.0;
 
     double t2 = t * t;
     double t3 = t * t2;
 
-    double x0 =  2.0 * t3 - 3.0 * t2 + 1.0;
-    double x1 =        t3 - 2.0 * t2 + t;
-    double x2 =        t3 -       t2;
+    double x0 = 2.0 * t3 - 3.0 * t2 + 1.0;
+    double x1 = t3 - 2.0 * t2 + t;
+    double x2 = t3 - t2;
     double x3 = -2.0 * t3 + 3.0 * t2;
 
     return x0 * b + x1 * e + x2 * f + x3 * c;
@@ -52,19 +52,19 @@ scm_step::scm_step()
     orientation[2] = 0.0;
     orientation[3] = 1.0;
 
-    position[0]    = 0.0;
-    position[1]    = 0.0;
-    position[2]    = 1.0;
+    position[0] = 0.0;
+    position[1] = 0.0;
+    position[2] = 1.0;
 
-    light[0]       = 0.0;
-    light[1]       = 2.0;
-    light[2]       = 1.0;
+    light[0] = 0.0;
+    light[1] = 2.0;
+    light[2] = 1.0;
 
-    speed          = 1.0;
-    distance       = 0.0;
-    tension        = 0.0;
-    bias           = 0.0;
-    zoom           = 1.0;
+    speed = 1.0;
+    distance = 0.0;
+    tension = 0.0;
+    bias = 0.0;
+    zoom = 1.0;
 
     vnormalize(light, light);
 }
@@ -74,17 +74,17 @@ scm_step::scm_step()
 scm_step::scm_step(const scm_step *a)
 {
     qcpy(orientation, a->orientation);
-    vcpy(position,    a->position);
-    vcpy(light,       a->light);
+    vcpy(position, a->position);
+    vcpy(light, a->light);
 
-    name       = a->name;
+    name = a->name;
     foreground = a->foreground;
     background = a->background;
-    speed      = a->speed;
-    distance   = a->distance;
-    tension    = a->tension;
-    bias       = a->bias;
-    zoom       = a->zoom;
+    speed = a->speed;
+    distance = a->distance;
+    tension = a->tension;
+    bias = a->bias;
+    zoom = a->zoom;
 }
 
 // Initialize a new SCM viewer step using linear interpolation of given steps.
@@ -95,26 +95,26 @@ scm_step::scm_step(const scm_step *a, const scm_step *b, double t)
     assert(b);
 
     qslerp(orientation, a->orientation, b->orientation, t);
-    vslerp(position,    a->position,    b->position,    t);
-    vslerp(light,       a->light,       b->light,       t);
+    vslerp(position, a->position, b->position, t);
+    vslerp(light, a->light, b->light, t);
 
-    speed        = lerp(a->speed,          b->speed,          t);
-    distance     = lerp(a->distance,       b->distance,       t);
-    tension      = lerp(a->tension,        b->tension,        t);
-    bias         = lerp(a->bias,           b->bias,           t);
-    zoom         = lerp(a->zoom,           b->zoom,           t);
+    speed = lerp(a->speed, b->speed, t);
+    distance = lerp(a->distance, b->distance, t);
+    tension = lerp(a->tension, b->tension, t);
+    bias = lerp(a->bias, b->bias, t);
+    zoom = lerp(a->zoom, b->zoom, t);
 
     qnormalize(orientation, orientation);
-    vnormalize(position,    position);
-    vnormalize(light,       light);
+    vnormalize(position, position);
+    vnormalize(light, light);
 }
 
 // Initialize a new SCM viewer step using cubic interpolation of given steps.
 
 scm_step::scm_step(const scm_step *a,
-                   const scm_step *b,
-                   const scm_step *c,
-                   const scm_step *d, double t)
+    const scm_step *b,
+    const scm_step *c,
+    const scm_step *d, double t)
 {
     assert(a);
     assert(b);
@@ -126,7 +126,7 @@ scm_step::scm_step(const scm_step *a,
     double C[4];
     double D[4];
 
-    qcpy (A,    a->orientation);
+    qcpy(A, a->orientation);
     qsign(B, A, b->orientation);
     qsign(C, B, c->orientation);
     qsign(D, C, d->orientation);
@@ -136,45 +136,45 @@ scm_step::scm_step(const scm_step *a,
     orientation[2] = hermite(A[2], B[2], C[2], D[2], t, b->tension, b->bias);
     orientation[3] = hermite(A[3], B[3], C[3], D[3], t, b->tension, b->bias);
 
-    position[0]    = hermite(a->position[0],
-                             b->position[0],
-                             c->position[0],
-                             d->position[0], t, b->tension, b->bias);
-    position[1]    = hermite(a->position[1],
-                             b->position[1],
-                             c->position[1],
-                             d->position[1], t, b->tension, b->bias);
-    position[2]    = hermite(a->position[2],
-                             b->position[2],
-                             c->position[2],
-                             d->position[2], t, b->tension, b->bias);
+    position[0] = hermite(a->position[0],
+        b->position[0],
+        c->position[0],
+        d->position[0], t, b->tension, b->bias);
+    position[1] = hermite(a->position[1],
+        b->position[1],
+        c->position[1],
+        d->position[1], t, b->tension, b->bias);
+    position[2] = hermite(a->position[2],
+        b->position[2],
+        c->position[2],
+        d->position[2], t, b->tension, b->bias);
 
-    light[0]       = hermite(a->light[0],
-                             b->light[0],
-                             c->light[0],
-                             d->light[0], t, b->tension, b->bias);
-    light[1]       = hermite(a->light[1],
-                             b->light[1],
-                             c->light[1],
-                             d->light[1], t, b->tension, b->bias);
-    light[2]       = hermite(a->light[2],
-                             b->light[2],
-                             c->light[2],
-                             d->light[2], t, b->tension, b->bias);
+    light[0] = hermite(a->light[0],
+        b->light[0],
+        c->light[0],
+        d->light[0], t, b->tension, b->bias);
+    light[1] = hermite(a->light[1],
+        b->light[1],
+        c->light[1],
+        d->light[1], t, b->tension, b->bias);
+    light[2] = hermite(a->light[2],
+        b->light[2],
+        c->light[2],
+        d->light[2], t, b->tension, b->bias);
 
-    distance       = hermite(a->distance,
-                             b->distance,
-                             c->distance,
-                             d->distance, t, b->tension, b->bias);
+    distance = hermite(a->distance,
+        b->distance,
+        c->distance,
+        d->distance, t, b->tension, b->bias);
 
-    speed          = lerp(b->speed,   c->speed,   t);
-    tension        = lerp(b->tension, c->tension, t);
-    bias           = lerp(b->bias,    c->bias,    t);
-    zoom           = lerp(b->zoom,    c->zoom,    t);
+    speed = lerp(b->speed, c->speed, t);
+    tension = lerp(b->tension, c->tension, t);
+    bias = lerp(b->bias, c->bias, t);
+    zoom = lerp(b->zoom, c->zoom, t);
 
     qnormalize(orientation, orientation);
-    vnormalize(position,    position);
-    vnormalize(light,       light);
+    vnormalize(position, position);
+    vnormalize(light, light);
 }
 
 // Initialize a new SCM viewer step using the given camera position, camera
@@ -185,16 +185,16 @@ scm_step::scm_step(const double *t, const double *r, const double *l)
     double M[16];
 
     qeuler(orientation, r);
-    meuler(M,           l);
+    meuler(M, l);
 
     vnormalize(light, M + 8);
     vnormalize(position, t);
 
     distance = vlen(t);
-    speed    = 1.0;
-    tension  = 0.0;
-    bias     = 0.0;
-    zoom     = 1.0;
+    speed = 1.0;
+    tension = 0.0;
+    bias = 0.0;
+    zoom = 1.0;
 }
 
 //------------------------------------------------------------------------------
@@ -218,9 +218,9 @@ void scm_step::draw()
 
 void scm_step::get_matrix(double *M) const
 {
-    vquaternionx(M +  0, orientation);
-    vquaterniony(M +  4, orientation);
-    vquaternionz(M +  8, orientation);
+    vquaternionx(M + 0, orientation);
+    vquaterniony(M + 4, orientation);
+    vquaternionz(M + 8, orientation);
 
     vcpy(M + 12, position);
 
@@ -228,8 +228,8 @@ void scm_step::get_matrix(double *M) const
     M[14] *= distance;
     M[12] *= distance;
 
-    M[ 3] = 0.0;
-    M[ 7] = 0.0;
+    M[3] = 0.0;
+    M[7] = 0.0;
     M[11] = 0.0;
     M[15] = 1.0;
 }
@@ -317,7 +317,7 @@ void scm_step::set_pitch(double a)
 
     // Get the position and right vectors.
 
-    vnormalize  (p, position);
+    vnormalize(p, position);
     vquaternionx(r, orientation);
 
     // Make certain the right vector is perpendicular.
@@ -328,16 +328,16 @@ void scm_step::set_pitch(double a)
 
     // Pitch around the right vector and build a basis.
 
-    mrotate   (R, r, a);
+    mrotate(R, r, a);
     vtransform(u, R, p);
     vnormalize(u, u);
-    vcrs      (b, r, u);
+    vcrs(b, r, u);
     vnormalize(b, b);
-    mbasis (R, r, u, b);
+    mbasis(R, r, u, b);
 
     // Convert the matrix to a new quaternion.
 
-    qmatrix   (orientation, R);
+    qmatrix(orientation, R);
     qnormalize(orientation, orientation);
 }
 

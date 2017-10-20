@@ -14,14 +14,13 @@
 #include "scm-log.hpp"
 
 #include <stdlib.h>
-
 //------------------------------------------------------------------------------
 
 scm_frame::scm_frame(GLsizei w, GLsizei h) : width(w), height(h)
 {
     glGenFramebuffers(1, &frame);
-    glGenTextures    (1, &color);
-    glGenTextures    (1, &depth);
+    glGenTextures(1, &color);
+    glGenTextures(1, &depth);
 
     init_color();
     init_depth();
@@ -30,8 +29,8 @@ scm_frame::scm_frame(GLsizei w, GLsizei h) : width(w), height(h)
 
 scm_frame::~scm_frame()
 {
-    if (color) glDeleteTextures    (1, &color);
-    if (depth) glDeleteTextures    (1, &depth);
+    if (color) glDeleteTextures(1, &color);
+    if (depth) glDeleteTextures(1, &depth);
     if (frame) glDeleteFramebuffers(1, &frame);
 }
 
@@ -59,7 +58,7 @@ void scm_frame::init_color()
     glBindTexture(GL_TEXTURE_RECTANGLE, color);
 
     glTexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_RGBA, width, height,
-                 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+        0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
     glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -74,7 +73,7 @@ void scm_frame::init_depth()
     glBindTexture(GL_TEXTURE_RECTANGLE, depth);
 
     glTexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_DEPTH_COMPONENT24, width, height,
-                 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, NULL);
+        0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, NULL);
 
     glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -95,9 +94,9 @@ void scm_frame::init_frame()
     glBindFramebuffer(GL_FRAMEBUFFER, frame);
     {
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-                               GL_TEXTURE_RECTANGLE, color, 0);
+            GL_TEXTURE_RECTANGLE, color, 0);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
-                               GL_TEXTURE_RECTANGLE, depth, 0);
+            GL_TEXTURE_RECTANGLE, depth, 0);
 
         if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
             scm_log("* init_framebuffer incomplete");
